@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — EH Fitness | Training &amp; Meal Prep</title>
+<meta name="description" content="Buy personal training, coaching plans, and fresh meal prep from EH Fitness in Indianapolis. Build your order and check out securely with Stripe.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a0a;
+  --panel:#16171b;
+  --panel-2:#1c1e23;
+  --line:rgba(255,255,255,.1);
+  --line-2:rgba(255,255,255,.18);
+  --white:#f5f4f0;
+  --grey:#9a9a96;
+  --accent:#e8e6df;
+  --flag:#ffd400;
+  --sub:#0b93f6;          /* recurring accent — iMessage blue */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--black);color:var(--white);
+  font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;min-height:100vh;position:relative;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(900px 500px at 50% -5%, rgba(255,255,255,.09), transparent 65%),
+    radial-gradient(700px 500px at 12% 100%, rgba(255,255,255,.05), transparent 60%),
+    linear-gradient(180deg,#0d0e11 0%, #0a0a0a 55%, #0d0e11 100%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.9;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.028) 0 1px, transparent 1px 62px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.028) 0 1px, transparent 1px 62px);
+  mix-blend-mode:soft-light;
+}
+::selection{background:var(--white);color:var(--black)}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+
+.topbar{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:20px 28px;max-width:1240px;margin:0 auto}
+.logo{font-family:'Anton',sans-serif;font-size:21px;letter-spacing:.04em}
+.back{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);transition:color .25s}
+.back:hover{color:var(--white)}
+
+.stage{position:relative;z-index:5;display:flex;flex-direction:column;align-items:center;padding:26px 20px 90px}
+.stage-head{text-align:center;margin-bottom:26px;max-width:560px}
+.stage-head h1{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(34px,6vw,54px);line-height:.95;letter-spacing:.01em}
+.stage-head p{color:var(--grey);font-size:16px;margin-top:12px}
+
+.app{
+  width:100%;max-width:600px;
+  background:linear-gradient(180deg, rgba(28,30,35,.96), rgba(18,19,23,.98));
+  border:1px solid var(--line-2);border-radius:26px;
+  box-shadow:0 40px 90px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.03) inset;
+  overflow:hidden;backdrop-filter:blur(8px);
+}
+.app-sheen{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent)}
+
+.app-tabs{display:flex;gap:8px;padding:18px 18px 0}
+.tab{
+  flex:1;background:none;border:0;cursor:pointer;
+  font-family:'Anton',sans-serif;text-transform:uppercase;font-size:18px;letter-spacing:.05em;
+  color:#75746f;padding:12px 10px 14px;border-radius:12px;position:relative;
+  transition:color .25s,background .25s;
+}
+.tab:hover{color:var(--accent);background:rgba(255,255,255,.04)}
+.tab.active{color:var(--white);background:rgba(255,255,255,.07)}
+.tab.active::after{content:"";position:absolute;left:16px;right:16px;bottom:6px;height:3px;background:var(--white);border-radius:3px}
+.tab .count{display:inline-block;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:#8b8a85;margin-left:7px;vertical-align:middle}
+.tab.active .count{color:var(--black);background:var(--white);padding:1px 7px;border-radius:100px}
+
+/* instruction bar — yellow, shown on both tabs */
+.prompt{margin:18px 18px 0;padding:14px 18px;border-radius:14px;background:var(--flag);border:1px solid #8a7400;display:flex;align-items:center;gap:13px}
+.prompt .step{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:#241f00;color:var(--flag);display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:14px}
+.prompt p{font-size:14.5px;color:#241f00;margin:0}
+.prompt b{color:#0f0d00;font-weight:700}
+
+.panel{display:none;padding:16px 18px 8px}
+.panel.show{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.group-label{
+  margin:4px 0 11px;font-size:11.5px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--grey);
+}
+.group-label.second{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+
+.item{
+  display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:16px;margin-bottom:10px;
+  background:var(--panel);border:1px solid var(--line);
+  transition:border-color .25s,background .25s;
+}
+.item.in-cart{border-color:rgba(11,147,246,.7);background:var(--panel-2)}
+.item .info{flex:1;min-width:0}
+.item h3{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;font-size:17px;letter-spacing:.02em;line-height:1.15}
+.item p{font-size:13.5px;color:var(--grey);margin-top:3px}
+.item .price{text-align:right;flex-shrink:0}
+.item .price .amt{font-family:'Anton',sans-serif;font-size:24px;line-height:1}
+.item .price .per{font-size:10.5px;color:var(--grey);letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-top:3px}
+.item.recurring .price .per{color:var(--sub)}
+
+/* add / subscribe toggle */
+.add-btn{
+  flex-shrink:0;background:var(--white);color:var(--black);border:0;cursor:pointer;
+  padding:11px 22px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;white-space:nowrap;transition:background .2s,color .2s,box-shadow .2s,transform .15s;
+  display:inline-flex;align-items:center;gap:7px;min-width:116px;justify-content:center;
+}
+.add-btn:hover{background:var(--accent)}
+.add-btn:active{transform:scale(.96)}
+/* selected state — iMessage blue, identical on both tabs */
+.add-btn.added{background:rgba(11,147,246,.14);color:var(--sub);box-shadow:inset 0 0 0 1.5px var(--sub)}
+.add-btn.added:hover{background:rgba(11,147,246,.24)}
+.add-btn .tick{width:12px;height:12px}
+
+/* quantity stepper — only on items that allow multiples */
+.stepper{
+  flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
+  min-width:116px;border-radius:100px;overflow:hidden;
+  background:rgba(11,147,246,.14);box-shadow:inset 0 0 0 1.5px var(--sub);
+}
+.stepper button{
+  width:38px;height:38px;background:none;border:0;color:var(--sub);cursor:pointer;
+  font-size:20px;line-height:1;display:flex;align-items:center;justify-content:center;
+  transition:background .18s;
+}
+.stepper button:hover{background:rgba(11,147,246,.22)}
+.stepper .qty{
+  min-width:24px;text-align:center;font-weight:700;font-size:15px;
+  color:var(--sub);font-variant-numeric:tabular-nums;
+}
+
+.tag-mo{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(11,147,246,.18);color:var(--sub);border:1px solid rgba(11,147,246,.5);padding:2px 7px;border-radius:100px;margin-left:7px;vertical-align:middle}
+.badge-best{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:var(--white);color:var(--black);padding:2px 8px;border-radius:100px;margin-left:8px;vertical-align:middle}
+
+.meals-notice{
+  margin:0 0 14px;padding:14px 17px;border-radius:14px;
+  background:rgba(255,255,255,.07);border:1px solid var(--line-2);
+  display:flex;gap:12px;align-items:flex-start;
+}
+.meals-notice svg{width:17px;height:17px;flex-shrink:0;margin-top:2px;color:var(--white)}
+.meals-notice p{font-size:13.5px;color:var(--accent);margin:0;line-height:1.55}
+.meals-notice b{color:var(--white);font-weight:700}
+
+/* cart */
+.cart-bar{border-top:1px solid var(--line-2);background:rgba(0,0,0,.5);padding:16px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.cart-toggle{flex:1;min-width:0;background:none;border:0;cursor:pointer;text-align:left;color:var(--white);display:flex;align-items:center;gap:11px;padding:0}
+.cart-toggle:disabled{cursor:default}
+.cart-icon{position:relative;flex-shrink:0;width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center}
+.cart-icon svg{width:17px;height:17px;color:var(--accent)}
+.cart-icon .bub{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:100px;background:var(--white);color:var(--black);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.cart-meta .l{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);font-weight:700}
+.cart-meta .v{font-family:'Anton',sans-serif;font-size:21px;line-height:1.15}
+.cart-meta .v small{font-family:'Inter',sans-serif;font-size:12px;color:var(--grey);font-weight:600;margin-left:6px}
+.chev{width:13px;height:13px;color:var(--grey);transition:transform .3s}
+.chev.open{transform:rotate(180deg)}
+.checkout-btn{
+  flex-shrink:0;background:var(--white);color:var(--black);border:0;cursor:pointer;
+  padding:15px 30px;border-radius:100px;font-size:13px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;transition:background .2s,transform .15s,opacity .2s;
+  display:inline-flex;align-items:center;gap:9px;
+}
+.checkout-btn:hover:not(:disabled){background:var(--accent);transform:translateX(2px)}
+.checkout-btn:disabled{opacity:.32;cursor:not-allowed}
+.checkout-btn svg{width:13px;height:13px}
+
+.cart-review{display:none;border-top:1px solid var(--line);background:rgba(0,0,0,.32);padding:6px 18px 14px}
+.cart-review.open{display:block}
+.cart-line{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+.cart-line:last-of-type{border-bottom:0}
+.cart-line .n{flex:1;font-size:14px}
+.cart-line .n .sub-note{display:block;color:var(--sub);font-size:12px;font-weight:600;margin-top:1px}
+.cart-line .n .qty-note{display:block;color:var(--grey);font-size:12.5px;margin-top:1px}
+.cart-line .s{font-weight:700;font-size:14px;font-variant-numeric:tabular-nums}
+.cart-line .x{background:none;border:0;color:#6f6e6a;cursor:pointer;font-size:17px;padding:2px 6px;line-height:1;transition:color .2s}
+.cart-line .x:hover{color:var(--white)}
+.cart-total{padding-top:13px;margin-top:4px;border-top:1px solid var(--line-2)}
+.tot-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.tot-row .lab{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);font-weight:700}
+.tot-row .val{font-family:'Anton',sans-serif;font-size:26px}
+.tot-row.recur .lab,.tot-row.recur .val{color:var(--sub)}
+.tot-row.recur .val{font-size:18px}
+.renew-note{font-size:12px;color:var(--grey);margin-top:6px;line-height:1.5}
+.clear-cart{background:none;border:0;color:var(--grey);cursor:pointer;font-size:12px;text-decoration:underline;padding:12px 0 0;font-weight:500}
+.clear-cart:hover{color:var(--white)}
+
+.co-msg{margin:0 18px 16px;padding:12px 16px;border-radius:12px;font-size:13.5px;display:none}
+.co-msg.show{display:block}
+.co-msg.err{background:rgba(255,80,80,.12);border:1px solid rgba(255,120,120,.45);color:#ffc9c9}
+.co-msg.info{background:var(--flag);border:2px dashed #8a7400;color:#241f00;font-weight:600}
+
+.help{margin-top:30px;text-align:center;max-width:600px}
+.help p{color:var(--grey);font-size:14.5px}
+.help a{color:var(--white);font-weight:600}
+
+@media(max-width:560px){
+  .stage{padding:18px 14px 70px}
+  .app{border-radius:22px}
+  .app-tabs{padding:14px 14px 0;gap:6px}
+  .tab{font-size:16px;padding:11px 6px 13px}
+  .prompt{margin:14px 14px 0;padding:13px 15px;gap:11px}
+  .prompt p{font-size:14px}
+  .panel{padding:14px 14px 6px}
+  .item{display:grid;grid-template-columns:1fr auto;grid-template-areas:"info info" "price action";gap:12px 10px;padding:14px}
+  .item .info{grid-area:info}
+  .item .price{grid-area:price;text-align:left;display:flex;align-items:baseline;gap:8px}
+  .item .price .per{margin-top:0}
+  .item .add-btn,.item .stepper{grid-area:action;justify-self:end}
+  .cart-bar{padding:13px 14px;gap:10px;flex-wrap:nowrap}
+  .cart-toggle{gap:9px}
+  .cart-icon{width:34px;height:34px;border-radius:10px}
+  .cart-meta .l{display:none}
+  .cart-meta .v{font-size:19px;white-space:nowrap}
+  .cart-meta .v small{margin-left:5px;font-size:11.5px}
+  .chev{display:none}
+  .checkout-btn{padding:14px 20px;font-size:12px;gap:7px}
+  .cart-review{padding:6px 14px 14px}
+  .co-msg{margin:0 14px 14px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="logo">EH FITNESS</a>
+  <a href="index.html" class="back">← Back to site</a>
+</div>
+
+<div class="stage">
+
+  <div class="stage-head">
+    <h1>Shop</h1>
+    <p>Secure checkout by Stripe</p>
+  </div>
+
+  <div class="app">
+    <div class="app-sheen"></div>
+
+    <div class="app-tabs" role="tablist">
+      <button class="tab active" data-panel="sessions" role="tab" aria-selected="true">
+        Training <span class="count">5</span>
+      </button>
+      <button class="tab" data-panel="meals" role="tab" aria-selected="false">
+        Meals <span class="count">5</span>
+      </button>
+    </div>
+
+    <div class="prompt">
+      <div class="step">1</div>
+      <p id="promptText"><b>Add training to your order.</b> Tap Meals above to add meal prep too.</p>
+    </div>
+
+    <!-- SESSIONS -->
+    <div class="panel show" id="sessions">
+
+
+      <div class="group-label">Pay as you go</div>
+
+      <div class="item" data-id="session_single" data-price="65" data-qty
+           data-label="Single Training Session">
+        <div class="info"><h3>Single Session</h3><p>One in-person or in-home session · buy as many as you like</p></div>
+        <div class="price"><div class="amt">$65</div><div class="per">per session</div></div>
+        <button class="add-btn" data-add>Add</button>
+      </div>
+
+      <div class="group-label second">Monthly plans</div>
+
+      <div class="item recurring" data-id="train_2x" data-price="540" data-recurring="month"
+           data-group="inperson" data-label="Personal Training — 2x Weekly">
+        <div class="info"><h3>2x Weekly <span class="tag-mo">Monthly</span></h3><p>Two sessions a week · about $62 per session</p></div>
+        <div class="price"><div class="amt">$540</div><div class="per">per month</div></div>
+        <button class="add-btn" data-add>Subscribe</button>
+      </div>
+
+      <div class="item recurring" data-id="train_3x" data-price="780" data-recurring="month"
+           data-group="inperson" data-label="Personal Training — 3x Weekly">
+        <div class="info"><h3>3x Weekly <span class="badge-best">Best Value</span></h3><p>Three sessions a week · $60 per session</p></div>
+        <div class="price"><div class="amt">$780</div><div class="per">per month</div></div>
+        <button class="add-btn" data-add>Subscribe</button>
+      </div>
+
+      <div class="item recurring" data-id="online_coaching" data-price="150" data-recurring="month"
+           data-label="Online Coaching">
+        <div class="info"><h3>Online Coaching <span class="tag-mo">Monthly</span></h3><p>Remote programming and check-ins</p></div>
+        <div class="price"><div class="amt">$150</div><div class="per">per month</div></div>
+        <button class="add-btn" data-add>Subscribe</button>
+      </div>
+
+      <div class="item recurring" data-id="nutrition" data-price="20" data-recurring="month"
+           data-label="Nutrition Coaching">
+        <div class="info"><h3>Nutrition Coaching <span class="tag-mo">Monthly</span></h3><p>Add to any plan</p></div>
+        <div class="price"><div class="amt">$20</div><div class="per">per month</div></div>
+        <button class="add-btn" data-add>Subscribe</button>
+      </div>
+
+    </div>
+
+    <!-- MEALS -->
+    <div class="panel" id="meals">
+
+      <div class="meals-notice">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <p><b>Orders must be placed by Friday</b> and will be ready for pickup or delivery the following <b>Sunday</b>. Orders placed after midnight on Friday will be filled with the next round of orders.</p>
+      </div>
+
+      <div class="item" data-id="meal_1" data-price="15" data-label="Single Meal">
+        <div class="info"><h3>Single Meal</h3><p>One fresh meal</p></div>
+        <div class="price"><div class="amt">$15</div><div class="per">1 meal</div></div>
+        <button class="add-btn" data-add>Add</button>
+      </div>
+
+      <div class="item" data-id="meal_3" data-price="42" data-label="3 Meal Pack">
+        <div class="info"><h3>3 Meal Pack</h3><p>$14 per meal</p></div>
+        <div class="price"><div class="amt">$42</div><div class="per">3 meals</div></div>
+        <button class="add-btn" data-add>Add</button>
+      </div>
+
+      <div class="item" data-id="meal_5" data-price="65" data-label="5 Meal Pack">
+        <div class="info"><h3>5 Meal Pack</h3><p>$13 per meal</p></div>
+        <div class="price"><div class="amt">$65</div><div class="per">5 meals</div></div>
+        <button class="add-btn" data-add>Add</button>
+      </div>
+
+      <div class="item" data-id="meal_10" data-price="125" data-label="10 Meal Pack">
+        <div class="info"><h3>10 Meal Pack</h3><p>$12.50 per meal</p></div>
+        <div class="price"><div class="amt">$125</div><div class="per">10 meals</div></div>
+        <button class="add-btn" data-add>Add</button>
+      </div>
+
+      <div class="item" data-id="meal_20" data-price="230" data-label="20 Meal Pack">
+        <div class="info"><h3>20 Meal Pack <span class="badge-best">Best Value</span></h3><p>$11.50 per meal</p></div>
+        <div class="price"><div class="amt">$230</div><div class="per">20 meals</div></div>
+        <button class="add-btn" data-add>Add</button>
+      </div>
+
+    </div>
+
+    <!-- CART REVIEW -->
+    <div class="cart-review" id="cartReview">
+      <div id="cartLines"></div>
+      <div class="cart-total">
+        <div class="tot-row"><span class="lab">Due today</span><span class="val" id="dueToday">$0</span></div>
+        <div class="tot-row recur" id="recurRow" style="display:none">
+          <span class="lab">Then monthly</span><span class="val" id="recurVal">$0</span>
+        </div>
+        <p class="renew-note" id="renewNote" style="display:none"></p>
+      </div>
+      <div style="text-align:center"><button class="clear-cart" id="clearCart">Clear order</button></div>
+    </div>
+
+    <div class="co-msg" id="coMsg"></div>
+
+    <div class="cart-bar">
+      <button class="cart-toggle" id="cartToggle" disabled>
+        <span class="cart-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 2H2"/></svg>
+          <span class="bub" id="cartBub" style="display:none">0</span>
+        </span>
+        <span class="cart-meta">
+          <span class="l">Your order</span>
+          <span class="v" id="cartSummary">$0 <small>empty</small></span>
+        </span>
+        <svg class="chev" id="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <button class="checkout-btn" id="checkoutBtn" disabled>
+        Checkout <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+
+  </div>
+
+
+  <div class="help">
+    <p>Not sure which to pick? The first consult is free — <a href="tel:3177796388">call (317) 779-6388</a></p>
+  </div>
+
+</div>
+
+<script>
+/* =========================================================================
+   CHECKOUT ENDPOINT
+   Paste the deployed Cloudflare Worker URL here after `npx wrangler deploy`.
+   Example: 'https://ehfitness-checkout.YOUR-SUBDOMAIN.workers.dev'
+   ========================================================================= */
+const CHECKOUT_ENDPOINT = 'https://ehfitness-checkout.ehfitness.workers.dev';
+
+const KEY='ehf_cart_v2';
+let cart={};
+try{ cart=JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ cart={}; }
+
+const items=[...document.querySelectorAll('.item[data-id]')];
+const CATALOG={};
+items.forEach(el=>{
+  CATALOG[el.dataset.id]={
+    price:Number(el.dataset.price),
+    label:el.dataset.label,
+    recurring:el.dataset.recurring||null,        // 'month' or null
+    group:el.dataset.group||null,                // mutually-exclusive tier group
+    allowQty:el.hasAttribute('data-qty')         // can be bought in multiples
+  };
+});
+Object.keys(cart).forEach(id=>{ if(!CATALOG[id]) delete cart[id]; });
+
+const MAX_QTY=30;
+const save=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(cart)); }catch(e){} };
+const ids=()=>Object.keys(cart);
+const count=()=>Object.values(cart).reduce((a,b)=>a+b,0);
+const oneTimeTotal=()=>ids().filter(id=>!CATALOG[id].recurring).reduce((s,id)=>s+CATALOG[id].price*cart[id],0);
+const monthlyTotal=()=>ids().filter(id=>CATALOG[id].recurring).reduce((s,id)=>s+CATALOG[id].price*cart[id],0);
+const money=n=>'$'+n.toLocaleString('en-US');
+
+/* ---- render ---- */
+const TICK='<svg class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2"><path d="M20 6 9 17l-5-5"/></svg>';
+function renderItem(el){
+  const id=el.dataset.id, c=CATALOG[id], qty=cart[id]||0;
+  el.classList.toggle('in-cart',qty>0);
+  const holder=el.querySelector('[data-add],.stepper');
+
+  if(c.allowQty && qty>0){
+    // swap the button for a − qty + stepper
+    if(!holder.classList.contains('stepper')){
+      const s=document.createElement('div');
+      s.className='stepper';
+      s.innerHTML='<button data-dec aria-label="Remove one">−</button>'+
+                  '<span class="qty"></span>'+
+                  '<button data-inc aria-label="Add one">+</button>';
+      holder.replaceWith(s);
+    }
+    el.querySelector('.qty').textContent=qty;
+    return;
+  }
+
+  // plain toggle button
+  if(holder.classList.contains('stepper')){
+    const b=document.createElement('button');
+    b.className='add-btn'; b.setAttribute('data-add','');
+    holder.replaceWith(b);
+  }
+  const btn=el.querySelector('[data-add]');
+  btn.classList.toggle('added',qty>0);
+  btn.innerHTML = qty>0 ? TICK+'Added' : (c.recurring?'Subscribe':'Add');
+  btn.setAttribute('aria-pressed',qty>0?'true':'false');
+}
+
+function renderCart(){
+  const n=count(), once=oneTimeTotal(), mo=monthlyTotal(), due=once+mo;
+
+  document.getElementById('cartSummary').innerHTML =
+    n ? money(due)+' <small>'+n+(n===1?' item':' items')+'</small>' : '$0 <small>empty</small>';
+  const bub=document.getElementById('cartBub');
+  bub.style.display=n?'flex':'none'; bub.textContent=n;
+  document.getElementById('checkoutBtn').disabled=!n;
+  document.getElementById('cartToggle').disabled=!n;
+  if(!n){
+    document.getElementById('cartReview').classList.remove('open');
+    document.getElementById('chev').classList.remove('open');
+  }
+
+  const lines=document.getElementById('cartLines');
+  lines.innerHTML='';
+  ids().forEach(id=>{
+    const c=CATALOG[id], q=cart[id];
+    const row=document.createElement('div');
+    row.className='cart-line';
+    let sub='';
+    if(c.recurring) sub='<span class="sub-note">plus '+money(c.price*q)+' billed monthly</span>';
+    else if(q>1)    sub='<span class="qty-note">'+q+' × '+money(c.price)+'</span>';
+    row.innerHTML='<div class="n">'+c.label+sub+'</div>'+
+                  '<div class="s">'+money(c.price*q)+'</div>'+
+                  '<button class="x" data-remove="'+id+'" aria-label="Remove">×</button>';
+    lines.appendChild(row);
+  });
+
+  document.getElementById('dueToday').textContent=money(due);
+  const recurRow=document.getElementById('recurRow');
+  const note=document.getElementById('renewNote');
+  if(mo>0){
+    recurRow.style.display='flex';
+    document.getElementById('recurVal').textContent=money(mo)+'/mo';
+    note.style.display='block';
+    note.textContent='Today’s total includes your first month. '+money(mo)+' renews automatically each month and can be cancelled anytime.';
+  }else{
+    recurRow.style.display='none';
+    note.style.display='none';
+  }
+  items.forEach(renderItem);
+}
+
+/* ---- interactions ---- */
+document.addEventListener('click',e=>{
+  const row=e.target.closest('.item[data-id]');
+  if(row){
+    const id=row.dataset.id;
+    if(e.target.closest('[data-inc]')){
+      cart[id]=Math.min((cart[id]||0)+1,MAX_QTY); save(); renderCart(); return;
+    }
+    if(e.target.closest('[data-dec]')){
+      cart[id]=(cart[id]||0)-1;
+      if(cart[id]<=0) delete cart[id];
+      save(); renderCart(); return;
+    }
+    if(e.target.closest('[data-add]')){
+      if(cart[id]){
+        delete cart[id];
+      }else{
+        // only one plan per tier group (e.g. can't buy 2x and 3x Weekly together)
+        const g=CATALOG[id].group;
+        if(g) ids().forEach(other=>{ if(CATALOG[other].group===g) delete cart[other]; });
+        cart[id]=1;
+      }
+      save(); renderCart(); return;
+    }
+  }
+  const rm=e.target.closest('[data-remove]');
+  if(rm){ delete cart[rm.dataset.remove]; save(); renderCart(); }
+});
+
+document.getElementById('cartToggle').addEventListener('click',()=>{
+  const open=document.getElementById('cartReview').classList.toggle('open');
+  document.getElementById('chev').classList.toggle('open',open);
+});
+document.getElementById('clearCart').addEventListener('click',()=>{ cart={}; save(); renderCart(); });
+
+/* ---- tabs ---- */
+const tabs=document.querySelectorAll('.tab');
+const COPY={
+  sessions:'<b>Add training to your order.</b> Tap Meals above to add meal prep too.',
+  meals:'<b>Add meal packs to your order.</b> After checkout you\'ll pick your dishes and pickup time.'
+};
+tabs.forEach(t=>t.addEventListener('click',()=>{
+  const key=t.dataset.panel;
+  tabs.forEach(x=>{x.classList.remove('active');x.setAttribute('aria-selected','false');});
+  t.classList.add('active');t.setAttribute('aria-selected','true');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('show'));
+  document.getElementById(key).classList.add('show');
+  document.getElementById('promptText').innerHTML=COPY[key];
+  history.replaceState(null,'','#'+key);
+}));
+if(location.hash==='#meals'){document.querySelector('.tab[data-panel="meals"]').click();}
+
+/* ---- checkout ---- */
+const msg=document.getElementById('coMsg');
+const showMsg=(t,k)=>{ msg.className='co-msg show '+k; msg.textContent=t; };
+const hideMsg=()=>{ msg.className='co-msg'; };
+
+document.getElementById('checkoutBtn').addEventListener('click',async()=>{
+  hideMsg();
+  if(!count()) return;
+  if(!CHECKOUT_ENDPOINT){
+    showMsg('Checkout is not connected yet — add the Worker URL to CHECKOUT_ENDPOINT in shop.html.','info');
+    return;
+  }
+  const btn=document.getElementById('checkoutBtn');
+  const original=btn.innerHTML;
+  btn.disabled=true; btn.textContent='Starting…';
+  try{
+    const res=await fetch(CHECKOUT_ENDPOINT,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({items:ids().map(id=>({id,qty:cart[id]}))})
+    });
+    const data=await res.json();
+    if(!res.ok||!data.url) throw new Error(data.error||'Checkout failed');
+    window.location.href=data.url;
+  }catch(err){
+    showMsg(err.message||'Something went wrong starting checkout. Please try again.','err');
+    btn.disabled=false; btn.innerHTML=original;
+  }
+});
+
+renderCart();
+</script>
+</body>
+</html>

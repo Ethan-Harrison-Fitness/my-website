@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmed — EH Fitness</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a0a;
+  --panel:#16171b;
+  --line:rgba(255,255,255,.1);
+  --line-2:rgba(255,255,255,.18);
+  --white:#f5f4f0;
+  --grey:#9a9a96;
+  --accent:#e8e6df;
+  --flag:#ffd400;
+  --sub:#0b93f6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--black);color:var(--white);
+  font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;min-height:100vh;position:relative;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(900px 500px at 50% -5%, rgba(255,255,255,.09), transparent 65%),
+    radial-gradient(700px 500px at 12% 100%, rgba(255,255,255,.05), transparent 60%),
+    linear-gradient(180deg,#0d0e11 0%, #0a0a0a 55%, #0d0e11 100%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.9;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.028) 0 1px, transparent 1px 62px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.028) 0 1px, transparent 1px 62px);
+  mix-blend-mode:soft-light;
+}
+a{color:inherit;text-decoration:none}
+
+.topbar{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:20px 28px;max-width:1240px;margin:0 auto}
+.logo{font-family:'Anton',sans-serif;font-size:21px;letter-spacing:.04em}
+.back{font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);transition:color .25s}
+.back:hover{color:var(--white)}
+
+.stage{position:relative;z-index:5;display:flex;flex-direction:column;align-items:center;padding:40px 20px 90px}
+
+.card{
+  width:100%;max-width:600px;
+  background:linear-gradient(180deg, rgba(28,30,35,.96), rgba(18,19,23,.98));
+  border:1px solid var(--line-2);border-radius:26px;
+  box-shadow:0 40px 90px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.03) inset;
+  overflow:hidden;text-align:center;
+}
+.sheen{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent)}
+.card-in{padding:44px 34px 36px}
+
+.check{
+  width:66px;height:66px;border-radius:50%;margin:0 auto 22px;
+  background:rgba(11,147,246,.14);box-shadow:inset 0 0 0 2px var(--sub);
+  display:flex;align-items:center;justify-content:center;
+  animation:pop .5s cubic-bezier(.2,.8,.3,1.2) both;
+}
+.check svg{width:30px;height:30px;color:var(--sub)}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+
+h1{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(30px,5.5vw,44px);line-height:1;letter-spacing:.01em;margin-bottom:14px}
+.lede{color:var(--accent);font-size:16.5px;max-width:420px;margin:0 auto}
+.receipt{color:var(--grey);font-size:14.5px;margin-top:14px}
+
+.next{
+  margin:30px 18px 0;padding:18px 20px;border-radius:16px;
+  background:var(--flag);border:1px solid #8a7400;text-align:left;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.next .n{
+  flex-shrink:0;width:26px;height:26px;border-radius:50%;
+  background:#241f00;color:var(--flag);display:flex;align-items:center;justify-content:center;
+  font-family:'Anton',sans-serif;font-size:14px;
+}
+.next h3{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;font-size:17px;color:#0f0d00;margin-bottom:3px}
+.next p{font-size:14px;color:#241f00;margin:0}
+.next a.go{
+  display:inline-flex;align-items:center;gap:8px;margin-top:12px;
+  background:#241f00;color:var(--flag);padding:11px 22px;border-radius:100px;
+  font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  transition:transform .2s;
+}
+.next a.go:hover{transform:translateX(3px)}
+.next a.go svg{width:12px;height:12px}
+
+.actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:28px 18px 0}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:100px;
+  font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  transition:background .2s,transform .15s;
+}
+.btn-solid{background:var(--white);color:var(--black)}
+.btn-solid:hover{background:var(--accent)}
+.btn-ghost{color:var(--white);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.4)}
+.btn-ghost:hover{background:rgba(255,255,255,.08)}
+
+.foot-note{
+  border-top:1px solid var(--line);margin-top:32px;padding:20px 24px 0;
+  color:var(--grey);font-size:13.5px;
+}
+.foot-note a{color:var(--white);font-weight:600}
+
+.help{margin-top:26px;text-align:center;color:var(--grey);font-size:14.5px}
+.help a{color:var(--white);font-weight:600}
+
+@media(max-width:560px){
+  .stage{padding:26px 14px 60px}
+  .card{border-radius:22px}
+  .card-in{padding:36px 22px 28px}
+  .next{margin:26px 14px 0}
+  .actions{padding:24px 14px 0}
+  .btn{flex:1;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="logo">EH FITNESS</a>
+  <a href="index.html" class="back">← Back to site</a>
+</div>
+
+<div class="stage">
+  <div class="card">
+    <div class="sheen"></div>
+    <div class="card-in">
+      <div class="check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h1>You're all set</h1>
+      <p class="lede">Payment went through and your order is confirmed. Ethan will be in touch shortly to get you started.</p>
+      <p class="receipt">A receipt is on its way to your email from Stripe.</p>
+    </div>
+
+    <!-- meal buyers still need to choose their dishes -->
+    <div class="next">
+      <div class="n">1</div>
+      <div>
+        <h3>Ordered meals?</h3>
+        <p>One quick step left — tell Ethan which dishes you'd like and your pickup time.</p>
+        <a href="order.html" class="go">
+          Choose Your Meals
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a href="index.html" class="btn btn-solid">Back to Home</a>
+      <a href="shop.html" class="btn btn-ghost">Shop Again</a>
+    </div>
+
+    <div class="foot-note">
+      Questions about your order? Call or text
+      <a href="tel:3177796388">(317) 779-6388</a>
+      or email <a href="mailto:ethanharrisonfitness@gmail.com">ethanharrisonfitness@gmail.com</a>
+    </div>
+    <div style="height:24px"></div>
+  </div>
+
+  <p class="help">Subscribed to a monthly plan? You can cancel anytime — just reach out.</p>
+</div>
+
+</body>
+</html>
