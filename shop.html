@@ -152,6 +152,50 @@ button{font-family:inherit}
 .meals-notice p{font-size:13.5px;color:var(--accent);margin:0;line-height:1.55}
 .meals-notice b{color:var(--white);font-weight:700}
 
+/* ---------- meal picker (appears once meals are in the cart) ---------- */
+.meal-picker{display:none;margin:18px 0 4px;padding-top:18px;border-top:1px solid var(--line)}
+.meal-picker.show{display:block;animation:fade .35s ease}
+.mp-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.mp-head h4{
+  font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+  font-size:17px;letter-spacing:.02em;
+}
+.mp-count{font-size:13px;font-weight:700;color:var(--sub);white-space:nowrap}
+.mp-count.done{color:#6ee7a8}
+.mp-count.over{color:#ff8f8f}
+.mp-sub{font-size:13px;color:var(--grey);margin:-6px 0 12px}
+
+.dish{
+  display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:13px;margin-bottom:8px;
+  background:var(--panel);border:1px solid var(--line);transition:border-color .25s,background .25s;
+}
+.dish.picked{border-color:rgba(11,147,246,.6);background:var(--panel-2)}
+.dish .dn{flex:1;font-size:14.5px;font-weight:500}
+.dish .stepper{min-width:104px}
+.dish .stepper button{width:34px;height:34px;font-size:18px}
+
+.pickup{margin-top:18px}
+.pickup .lab,.notes .lab{
+  font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--grey);margin-bottom:9px;display:block;
+}
+.pu-opts{display:flex;flex-wrap:wrap;gap:8px}
+.pu{
+  border:1.5px solid var(--line-2);border-radius:100px;padding:9px 17px;
+  font-size:13.5px;color:var(--accent);cursor:pointer;background:none;
+  transition:background .2s,border-color .2s,color .2s;
+}
+.pu:hover{background:rgba(255,255,255,.07)}
+.pu.on{background:rgba(11,147,246,.14);border-color:var(--sub);color:var(--sub);font-weight:600}
+
+.notes{margin-top:18px}
+.notes textarea{
+  width:100%;background:var(--panel);border:1px solid var(--line);border-radius:13px;
+  color:var(--white);font-family:inherit;font-size:14px;padding:12px 14px;resize:vertical;min-height:66px;
+}
+.notes textarea:focus{outline:none;border-color:var(--sub)}
+.notes textarea::placeholder{color:#6f6e6a}
+
 /* cart */
 .cart-bar{border-top:1px solid var(--line-2);background:rgba(0,0,0,.5);padding:16px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .cart-toggle{flex:1;min-width:0;background:none;border:0;cursor:pointer;text-align:left;color:var(--white);display:flex;align-items:center;gap:11px;padding:0}
@@ -310,7 +354,7 @@ button{font-family:inherit}
 
       <div class="meals-notice">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-        <p><b>Orders must be placed by Friday</b> and will be ready for pickup or delivery the following <b>Sunday</b>. Orders placed after midnight on Friday will be filled with the next round of orders.</p>
+        <p><b>Orders close Thursday at 8:00 PM</b> and will be ready for pickup or delivery the following <b>Sunday</b>. Anything ordered after that will be filled with the next round of orders.</p>
       </div>
 
       <div class="item" data-id="meal_1" data-price="15" data-label="Single Meal">
@@ -341,6 +385,62 @@ button{font-family:inherit}
         <div class="info"><h3>20 Meal Pack <span class="badge-best">Best Value</span></h3><p>$11.50 per meal</p></div>
         <div class="price"><div class="amt">$230</div><div class="per">20 meals</div></div>
         <button class="add-btn" data-add>Add</button>
+      </div>
+
+      <!-- appears once a meal pack is in the cart; must be completed to check out -->
+      <div class="meal-picker" id="mealPicker">
+        <div class="mp-head">
+          <h4>Choose your meals</h4>
+          <span class="mp-count" id="mpCount">0 of 0</span>
+        </div>
+        <p class="mp-sub">Pick exactly how many of each dish you'd like.</p>
+
+        <div class="dish" data-dish="honey_garlic">
+          <span class="dn">Honey Garlic Bowl</span>
+          <div class="stepper">
+            <button data-dish-dec aria-label="Fewer">−</button><span class="qty">0</span><button data-dish-inc aria-label="More">+</button>
+          </div>
+        </div>
+        <div class="dish" data-dish="cheeseburger">
+          <span class="dn">Protein Cheeseburger Bowl</span>
+          <div class="stepper">
+            <button data-dish-dec aria-label="Fewer">−</button><span class="qty">0</span><button data-dish-inc aria-label="More">+</button>
+          </div>
+        </div>
+        <div class="dish" data-dish="fajita">
+          <span class="dn">Chicken Fajita Bowl</span>
+          <div class="stepper">
+            <button data-dish-dec aria-label="Fewer">−</button><span class="qty">0</span><button data-dish-inc aria-label="More">+</button>
+          </div>
+        </div>
+        <div class="dish" data-dish="gyro">
+          <span class="dn">Turkey Gyro Bowl</span>
+          <div class="stepper">
+            <button data-dish-dec aria-label="Fewer">−</button><span class="qty">0</span><button data-dish-inc aria-label="More">+</button>
+          </div>
+        </div>
+
+        <div class="pickup">
+          <span class="lab">Pickup time</span>
+          <div class="pu-opts" id="puOpts">
+            <button class="pu" data-pu="1–2 PM">1–2 PM</button>
+            <button class="pu" data-pu="2–3 PM">2–3 PM</button>
+            <button class="pu" data-pu="3–4 PM">3–4 PM</button>
+            <button class="pu" data-pu="Delivery">Delivery ($45+ orders)</button>
+          </div>
+        </div>
+
+        <div class="notes" id="addrWrap" style="display:none">
+          <span class="lab">Delivery address <span style="color:var(--sub);text-transform:none;letter-spacing:0">· required</span></span>
+          <textarea id="mealAddr" maxlength="200" placeholder="Street, city, ZIP"></textarea>
+        </div>
+
+        <div class="notes">
+          <span class="lab">Notes <span style="text-transform:none;letter-spacing:0;font-weight:400">(optional)</span></span>
+          <textarea id="mealNotes" maxlength="400" placeholder="Allergies, substitutions, anything else…"></textarea>
+        </div>
+
+        <p class="mp-sub" style="margin:14px 0 0">Your email and phone are collected at checkout so Ethan can reach you about your order.</p>
       </div>
 
     </div>
@@ -412,6 +512,23 @@ items.forEach(el=>{
 Object.keys(cart).forEach(id=>{ if(!CATALOG[id]) delete cart[id]; });
 
 const MAX_QTY=30;
+
+/* ---- meal selection state ---- */
+const MEALS_PER_PACK={meal_1:1,meal_3:3,meal_5:5,meal_10:10,meal_20:20};
+const DISH_NAMES={
+  honey_garlic:'Honey Garlic Bowl',
+  cheeseburger:'Protein Cheeseburger Bowl',
+  fajita:'Chicken Fajita Bowl',
+  gyro:'Turkey Gyro Bowl'
+};
+const MKEY='ehf_meals_v1';
+let meals={dishes:{},pickup:'',notes:'',addr:''};
+try{ meals=Object.assign(meals,JSON.parse(localStorage.getItem(MKEY))||{}); }catch(e){}
+
+const mealsRequired=()=>Object.keys(cart).reduce((n,id)=>n+(MEALS_PER_PACK[id]||0)*cart[id],0);
+const mealsChosen=()=>Object.values(meals.dishes).reduce((a,b)=>a+b,0);
+const saveMeals=()=>{ try{ localStorage.setItem(MKEY,JSON.stringify(meals)); }catch(e){} };
+
 const save=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(cart)); }catch(e){} };
 const ids=()=>Object.keys(cart);
 const count=()=>Object.values(cart).reduce((a,b)=>a+b,0);
@@ -494,6 +611,55 @@ function renderCart(){
     note.style.display='none';
   }
   items.forEach(renderItem);
+  renderPicker();
+}
+
+/* ---- meal picker ---- */
+function renderPicker(){
+  const need=mealsRequired(), got=mealsChosen();
+  const picker=document.getElementById('mealPicker');
+  picker.classList.toggle('show',need>0);
+
+  // drop stale selections if the cart no longer has meals
+  if(need===0 && (got>0||meals.pickup||meals.notes)){
+    meals={dishes:{},pickup:'',notes:'',addr:''}; saveMeals();
+  }
+
+  const c=document.getElementById('mpCount');
+  c.textContent=got+' of '+need+' chosen';
+  c.classList.toggle('done',need>0&&got===need);
+  c.classList.toggle('over',got>need);
+
+  document.querySelectorAll('.dish').forEach(el=>{
+    const n=meals.dishes[el.dataset.dish]||0;
+    el.querySelector('.qty').textContent=n;
+    el.classList.toggle('picked',n>0);
+  });
+  document.querySelectorAll('.pu').forEach(b=>{
+    b.classList.toggle('on',b.dataset.pu===meals.pickup);
+  });
+  const ta=document.getElementById('mealNotes');
+  if(ta.value!==meals.notes) ta.value=meals.notes;
+
+  // address is only asked for (and only required) on delivery orders
+  const wantsDelivery=meals.pickup==='Delivery';
+  document.getElementById('addrWrap').style.display=wantsDelivery?'block':'none';
+  const ad=document.getElementById('mealAddr');
+  if(ad.value!==meals.addr) ad.value=meals.addr;
+  if(!wantsDelivery && meals.addr){ meals.addr=''; ad.value=''; saveMeals(); }
+}
+
+// null when the order is fine to submit, otherwise the reason it isn't
+function mealBlocker(){
+  const need=mealsRequired();
+  if(need===0) return null;
+  const got=mealsChosen();
+  if(got<need) return 'Choose '+(need-got)+' more meal'+(need-got===1?'':'s')+' before checking out.';
+  if(got>need) return 'You’ve chosen '+got+' meals but paid for '+need+'. Remove '+(got-need)+'.';
+  if(!meals.pickup) return 'Pick a pickup time before checking out.';
+  if(meals.pickup==='Delivery' && !meals.addr.trim())
+    return 'Add a delivery address before checking out.';
+  return null;
 }
 
 /* ---- interactions ---- */
@@ -522,7 +688,35 @@ document.addEventListener('click',e=>{
     }
   }
   const rm=e.target.closest('[data-remove]');
-  if(rm){ delete cart[rm.dataset.remove]; save(); renderCart(); }
+  if(rm){ delete cart[rm.dataset.remove]; save(); renderCart(); return; }
+
+  // dish steppers
+  const dish=e.target.closest('.dish');
+  if(dish){
+    const d=dish.dataset.dish;
+    if(e.target.closest('[data-dish-inc]')){
+      if(mealsChosen()<mealsRequired()){          // never let them exceed what they paid for
+        meals.dishes[d]=(meals.dishes[d]||0)+1; saveMeals(); renderPicker(); hideMsg();
+      }
+      return;
+    }
+    if(e.target.closest('[data-dish-dec]')){
+      meals.dishes[d]=(meals.dishes[d]||0)-1;
+      if(meals.dishes[d]<=0) delete meals.dishes[d];
+      saveMeals(); renderPicker(); hideMsg(); return;
+    }
+  }
+
+  // pickup time
+  const pu=e.target.closest('.pu');
+  if(pu){ meals.pickup=(meals.pickup===pu.dataset.pu)?'':pu.dataset.pu; saveMeals(); renderPicker(); hideMsg(); }
+});
+
+document.getElementById('mealNotes').addEventListener('input',e=>{
+  meals.notes=e.target.value; saveMeals();
+});
+document.getElementById('mealAddr').addEventListener('input',e=>{
+  meals.addr=e.target.value; saveMeals(); hideMsg();
 });
 
 document.getElementById('cartToggle').addEventListener('click',()=>{
@@ -556,6 +750,16 @@ const hideMsg=()=>{ msg.className='co-msg'; };
 document.getElementById('checkoutBtn').addEventListener('click',async()=>{
   hideMsg();
   if(!count()) return;
+
+  // meal choices are required before paying
+  const blocked=mealBlocker();
+  if(blocked){
+    showMsg(blocked,'info');
+    document.querySelector('.tab[data-panel="meals"]').click();
+    document.getElementById('mealPicker').scrollIntoView({block:'center',behavior:'smooth'});
+    return;
+  }
+
   if(!CHECKOUT_ENDPOINT){
     showMsg('Checkout is not connected yet — add the Worker URL to CHECKOUT_ENDPOINT in shop.html.','info');
     return;
@@ -567,7 +771,17 @@ document.getElementById('checkoutBtn').addEventListener('click',async()=>{
     const res=await fetch(CHECKOUT_ENDPOINT,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({items:ids().map(id=>({id,qty:cart[id]}))})
+      body:JSON.stringify({
+        items:ids().map(id=>({id,qty:cart[id]})),
+        meals:mealsRequired()>0 ? {
+          dishes:Object.entries(meals.dishes)
+            .filter(([,n])=>n>0)
+            .map(([d,n])=>({name:DISH_NAMES[d]||d,qty:n})),
+          pickup:meals.pickup,
+          address:(meals.addr||'').slice(0,200),
+          notes:(meals.notes||'').slice(0,400)
+        } : null
+      })
     });
     const data=await res.json();
     if(!res.ok||!data.url) throw new Error(data.error||'Checkout failed');
