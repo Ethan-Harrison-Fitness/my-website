@@ -196,6 +196,46 @@ button{font-family:inherit}
 .notes textarea:focus{outline:none;border-color:var(--sub)}
 .notes textarea::placeholder{color:#6f6e6a}
 
+/* ---------- merch ---------- */
+.merch-card{
+  display:flex;gap:16px;padding:16px;border-radius:16px;margin-bottom:12px;
+  background:var(--panel);border:1px solid var(--line);
+  transition:border-color .25s,background .25s;
+}
+.merch-card.in-cart{border-color:rgba(11,147,246,.7);background:var(--panel-2)}
+.merch-photo{width:128px;flex-shrink:0}
+.merch-photo .main{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;display:block;background:#000}
+.merch-photo .thumbs{display:flex;gap:6px;margin-top:6px}
+.merch-photo .thumbs button{border:1.5px solid var(--line-2);border-radius:8px;padding:0;background:none;cursor:pointer;overflow:hidden;width:34px;height:34px;flex-shrink:0}
+.merch-photo .thumbs button.on{border-color:var(--sub)}
+.merch-photo .thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.merch-photo .coming{
+  width:100%;aspect-ratio:3/4;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  border:1.5px dashed var(--line-2);color:var(--grey);
+  font-family:'Anton',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  text-align:center;padding:10px;line-height:1.5;
+}
+.merch-info{flex:1;min-width:0}
+.merch-info h3{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;font-size:17px;letter-spacing:.02em;line-height:1.15}
+.merch-info .desc{font-size:13.5px;color:var(--grey);margin-top:3px}
+.merch-info .mprice{font-family:'Anton',sans-serif;font-size:24px;margin-top:8px}
+.opt-label{margin:10px 0 2px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+.opt-row{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 2px}
+.opt{
+  border:1.5px solid var(--line-2);border-radius:100px;padding:7px 15px;
+  font-size:13px;color:var(--accent);cursor:pointer;background:none;
+  transition:background .2s,border-color .2s,color .2s;
+}
+.opt:hover{background:rgba(255,255,255,.07)}
+.opt.on{background:rgba(11,147,246,.14);border-color:var(--sub);color:var(--sub);font-weight:600}
+.merch-hint{display:none;font-size:12.5px;color:var(--flag);margin-top:8px;font-weight:600}
+.merch-hint.show{display:block;animation:fade .3s ease}
+.merch-foot{display:flex;align-items:center;justify-content:flex-end;margin-top:10px}
+@media(max-width:560px){
+  .merch-card{gap:12px;padding:14px}
+  .merch-photo{width:104px}
+}
+
 /* cart */
 .cart-bar{border-top:1px solid var(--line-2);background:rgba(0,0,0,.5);padding:16px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .cart-toggle{flex:1;min-width:0;background:none;border:0;cursor:pointer;text-align:left;color:var(--white);display:flex;align-items:center;gap:11px;padding:0}
@@ -296,6 +336,9 @@ button{font-family:inherit}
       </button>
       <button class="tab" data-panel="meals" role="tab" aria-selected="false">
         Meals <span class="count">5</span>
+      </button>
+      <button class="tab" data-panel="merch" role="tab" aria-selected="false">
+        Merch <span class="count">3</span>
       </button>
     </div>
 
@@ -445,6 +488,88 @@ button{font-family:inherit}
 
     </div>
 
+    <!-- MERCH -->
+    <div class="panel" id="merch">
+
+      <div class="meals-notice">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+        <p><b>Printed to order</b> by Trusted Threads, our family print shop — every piece is made when you order it.</p>
+      </div>
+
+      <div class="merch-card" data-product="merch_tee">
+        <div class="merch-photo">
+          <img class="main" src="images/merch/merch-tee-black-front.jpg" alt="EH Fitness T-Shirt — black, front">
+          <div class="thumbs"></div>
+        </div>
+        <div class="merch-info">
+          <h3>EH Fitness T-Shirt</h3>
+          <p class="desc">EH barbell logo on the front. 1% Better Every Day down the back.</p>
+          <div class="mprice">$27.50</div>
+          <div class="opt-label">Color</div>
+          <div class="opt-row" data-opt="color">
+            <button type="button" class="opt on" data-val="Black">Black</button>
+            <button type="button" class="opt" data-val="White">White</button>
+          </div>
+          <div class="opt-label">Size</div>
+          <div class="opt-row" data-opt="size">
+            <button type="button" class="opt" data-val="S">S</button>
+            <button type="button" class="opt" data-val="M">M</button>
+            <button type="button" class="opt" data-val="L">L</button>
+            <button type="button" class="opt" data-val="XL">XL</button>
+            <button type="button" class="opt" data-val="2XL">2XL</button>
+            <button type="button" class="opt" data-val="3XL">3XL</button>
+          </div>
+          <div class="merch-hint">Pick a size first.</div>
+          <div class="merch-foot"><button type="button" class="add-btn" data-merch-add>Add</button></div>
+        </div>
+      </div>
+
+      <div class="merch-card" data-product="merch_ringer">
+        <div class="merch-photo">
+          <div class="coming">Photo<br>coming soon</div>
+        </div>
+        <div class="merch-info">
+          <h3>EH Fitness (Golden Era Tee)</h3>
+          <p class="desc">Old-school ringer style. EH barbell logo on the chest.</p>
+          <div class="mprice">$32.50</div>
+          <div class="opt-label">Size</div>
+          <div class="opt-row" data-opt="size">
+            <button type="button" class="opt" data-val="S">S</button>
+            <button type="button" class="opt" data-val="M">M</button>
+            <button type="button" class="opt" data-val="L">L</button>
+            <button type="button" class="opt" data-val="XL">XL</button>
+            <button type="button" class="opt" data-val="2XL">2XL</button>
+            <button type="button" class="opt" data-val="3XL">3XL</button>
+          </div>
+          <div class="merch-hint">Pick a size first.</div>
+          <div class="merch-foot"><button type="button" class="add-btn" data-merch-add>Add</button></div>
+        </div>
+      </div>
+
+      <div class="merch-card" data-product="merch_sweatshirt">
+        <div class="merch-photo">
+          <div class="coming">Photo<br>coming soon</div>
+        </div>
+        <div class="merch-info">
+          <h3>EH Fitness Sweatshirt</h3>
+          <p class="desc">EH barbell logo on the front. 1% Better Every Day on the back.</p>
+          <div class="mprice">$45</div>
+          <div class="opt-label">Size</div>
+          <div class="opt-row" data-opt="size">
+            <button type="button" class="opt" data-val="S">S</button>
+            <button type="button" class="opt" data-val="M">M</button>
+            <button type="button" class="opt" data-val="L">L</button>
+            <button type="button" class="opt" data-val="XL">XL</button>
+            <button type="button" class="opt" data-val="2XL">2XL</button>
+            <button type="button" class="opt" data-val="3XL">3XL</button>
+          </div>
+          <div class="merch-hint">Pick a size first.</div>
+          <div class="merch-foot"><button type="button" class="add-btn" data-merch-add>Add</button></div>
+        </div>
+      </div>
+
+    </div>
+
     <!-- CART REVIEW -->
     <div class="cart-review" id="cartReview">
       <div id="cartLines"></div>
@@ -529,10 +654,30 @@ const mealsRequired=()=>Object.keys(cart).reduce((n,id)=>n+(MEALS_PER_PACK[id]||
 const mealsChosen=()=>Object.values(meals.dishes).reduce((a,b)=>a+b,0);
 const saveMeals=()=>{ try{ localStorage.setItem(MKEY,JSON.stringify(meals)); }catch(e){} };
 
+/* ---- merch state (variant lines live outside the id->qty cart) ---- */
+const MERCH={
+  merch_tee:{price:27.50,label:'EH Fitness T-Shirt'},
+  merch_ringer:{price:32.50,label:'EH Fitness (Golden Era Tee)'},
+  merch_sweatshirt:{price:45.00,label:'EH Fitness Sweatshirt'}
+};
+const MERCH_SIZES=['S','M','L','XL','2XL','3XL'];
+const TEE_IMGS={
+  Black:['images/merch/merch-tee-black-front.jpg','images/merch/merch-tee-black-back.jpg'],
+  White:['images/merch/merch-tee-white-back.jpg']
+};
+const MERCH_KEY='ehf_merch_v1';
+let merchCart=[];
+try{ merchCart=JSON.parse(localStorage.getItem(MERCH_KEY))||[]; }catch(e){ merchCart=[]; }
+merchCart=merchCart.filter(l=>MERCH[l.id]&&MERCH_SIZES.includes(l.size)&&(l.qty>0));
+const saveMerch=()=>{ try{ localStorage.setItem(MERCH_KEY,JSON.stringify(merchCart)); }catch(e){} };
+const merchKey=(id,size,color)=>id+'|'+size+'|'+(color||'');
+const merchCount=()=>merchCart.reduce((a,l)=>a+l.qty,0);
+const merchTotal=()=>merchCart.reduce((s,l)=>s+MERCH[l.id].price*l.qty,0);
+
 const save=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(cart)); }catch(e){} };
 const ids=()=>Object.keys(cart);
-const count=()=>Object.values(cart).reduce((a,b)=>a+b,0);
-const oneTimeTotal=()=>ids().filter(id=>!CATALOG[id].recurring).reduce((s,id)=>s+CATALOG[id].price*cart[id],0);
+const count=()=>Object.values(cart).reduce((a,b)=>a+b,0)+merchCount();
+const oneTimeTotal=()=>ids().filter(id=>!CATALOG[id].recurring).reduce((s,id)=>s+CATALOG[id].price*cart[id],0)+merchTotal();
 const monthlyTotal=()=>ids().filter(id=>CATALOG[id].recurring).reduce((s,id)=>s+CATALOG[id].price*cart[id],0);
 const money=n=>'$'+n.toLocaleString('en-US');
 
@@ -597,6 +742,17 @@ function renderCart(){
                   '<button class="x" data-remove="'+id+'" aria-label="Remove">×</button>';
     lines.appendChild(row);
   });
+  merchCart.forEach(l=>{
+    const m=MERCH[l.id];
+    const row=document.createElement('div');
+    row.className='cart-line';
+    const variant=[l.size,l.color].filter(Boolean).join(' · ');
+    const sub='<span class="qty-note">'+variant+(l.qty>1?' · '+l.qty+' × '+money(m.price):'')+'</span>';
+    row.innerHTML='<div class="n">'+m.label+sub+'</div>'+
+                  '<div class="s">'+money(m.price*l.qty)+'</div>'+
+                  '<button class="x" data-merch-remove="'+l.key+'" aria-label="Remove">×</button>';
+    lines.appendChild(row);
+  });
 
   document.getElementById('dueToday').textContent=money(due);
   const recurRow=document.getElementById('recurRow');
@@ -611,7 +767,53 @@ function renderCart(){
     note.style.display='none';
   }
   items.forEach(renderItem);
+  renderMerchCards();
   renderPicker();
+}
+
+/* ---- merch helpers ---- */
+function merchSel(card){
+  const colorBtn=card.querySelector('[data-opt="color"] .opt.on');
+  const sizeBtn=card.querySelector('[data-opt="size"] .opt.on');
+  return {
+    id:card.dataset.product,
+    color:colorBtn?colorBtn.dataset.val:null,
+    size:sizeBtn?sizeBtn.dataset.val:null
+  };
+}
+function renderTeeImgs(card,color){
+  const imgs=TEE_IMGS[color]||[];
+  const main=card.querySelector('.merch-photo .main');
+  const thumbs=card.querySelector('.merch-photo .thumbs');
+  if(!main||!thumbs) return;
+  if(imgs.length){
+    main.src=imgs[0];
+    main.alt='EH Fitness T-Shirt — '+color.toLowerCase()+', front';
+  }
+  thumbs.innerHTML='';
+  imgs.forEach((src,i)=>{
+    const b=document.createElement('button');
+    b.type='button';
+    b.setAttribute('aria-label','View '+(i===0?'front':'back'));
+    if(i===0) b.classList.add('on');
+    const im=document.createElement('img');
+    im.src=src; im.alt='';
+    b.appendChild(im);
+    thumbs.appendChild(b);
+  });
+}
+function renderMerchCards(){
+  document.querySelectorAll('.merch-card').forEach(card=>{
+    const sel=merchSel(card);
+    const active=!!(sel.size&&merchCart.some(l=>l.key===merchKey(sel.id,sel.size,sel.color)));
+    card.classList.toggle('in-cart',active);
+    const btn=card.querySelector('[data-merch-add]');
+    if(btn){
+      btn.classList.toggle('added',active);
+      btn.innerHTML=active?TICK+'Added':'Add';
+      btn.setAttribute('aria-pressed',active?'true':'false');
+    }
+  });
 }
 
 /* ---- meal picker ---- */
@@ -690,6 +892,53 @@ document.addEventListener('click',e=>{
   const rm=e.target.closest('[data-remove]');
   if(rm){ delete cart[rm.dataset.remove]; save(); renderCart(); return; }
 
+  // merch option pills (color / size)
+  const opt=e.target.closest('.merch-card .opt');
+  if(opt){
+    const card=opt.closest('.merch-card');
+    const optRow=opt.closest('[data-opt]');
+    optRow.querySelectorAll('.opt').forEach(b=>b.classList.remove('on'));
+    opt.classList.add('on');
+    card.querySelector('.merch-hint').classList.remove('show');
+    if(optRow.dataset.opt==='color'&&card.dataset.product==='merch_tee') renderTeeImgs(card,opt.dataset.val);
+    renderMerchCards();
+    return;
+  }
+
+  // merch photo thumbnails
+  const th=e.target.closest('.merch-photo .thumbs button');
+  if(th){
+    const wrap=th.closest('.merch-photo');
+    const main=wrap.querySelector('.main');
+    const im=th.querySelector('img');
+    if(main&&im) main.src=im.src;
+    wrap.querySelectorAll('.thumbs button').forEach(b=>b.classList.remove('on'));
+    th.classList.add('on');
+    return;
+  }
+
+  // merch add / remove toggle
+  const madd=e.target.closest('[data-merch-add]');
+  if(madd){
+    const card=madd.closest('.merch-card');
+    const sel=merchSel(card);
+    if(!sel.size){ card.querySelector('.merch-hint').classList.add('show'); return; }
+    const key=merchKey(sel.id,sel.size,sel.color);
+    const ix=merchCart.findIndex(l=>l.key===key);
+    if(ix>=0) merchCart.splice(ix,1);
+    else merchCart.push({key:key,id:sel.id,size:sel.size,color:sel.color,qty:1});
+    saveMerch(); renderCart();
+    return;
+  }
+
+  // merch line remove (cart review)
+  const mrm=e.target.closest('[data-merch-remove]');
+  if(mrm){
+    merchCart=merchCart.filter(l=>l.key!==mrm.dataset.merchRemove);
+    saveMerch(); renderCart();
+    return;
+  }
+
   // dish steppers
   const dish=e.target.closest('.dish');
   if(dish){
@@ -723,13 +972,14 @@ document.getElementById('cartToggle').addEventListener('click',()=>{
   const open=document.getElementById('cartReview').classList.toggle('open');
   document.getElementById('chev').classList.toggle('open',open);
 });
-document.getElementById('clearCart').addEventListener('click',()=>{ cart={}; save(); renderCart(); });
+document.getElementById('clearCart').addEventListener('click',()=>{ cart={}; save(); merchCart=[]; saveMerch(); renderCart(); });
 
 /* ---- tabs ---- */
 const tabs=document.querySelectorAll('.tab');
 const COPY={
   sessions:'<b>Add training to your order.</b> Tap Meals above to add meal prep too.',
-  meals:'<b>Add meal packs to your order.</b> After checkout you\'ll pick your dishes and pickup time.'
+  meals:'<b>Add meal packs to your order.</b> After checkout you\'ll pick your dishes and pickup time.',
+  merch:'<b>EH Fitness merch.</b> Pick your color and size, then tap Add.'
 };
 tabs.forEach(t=>t.addEventListener('click',()=>{
   const key=t.dataset.panel;
@@ -740,7 +990,7 @@ tabs.forEach(t=>t.addEventListener('click',()=>{
   document.getElementById('promptText').innerHTML=COPY[key];
   history.replaceState(null,'','#'+key);
 }));
-if(location.hash==='#meals'){document.querySelector('.tab[data-panel="meals"]').click();}
+if(location.hash==='#meals'||location.hash==='#merch'){document.querySelector('.tab[data-panel="'+location.hash.slice(1)+'"]').click();}
 
 /* ---- checkout ---- */
 const msg=document.getElementById('coMsg');
@@ -773,6 +1023,7 @@ document.getElementById('checkoutBtn').addEventListener('click',async()=>{
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         items:ids().map(id=>({id,qty:cart[id]})),
+        merch:merchCart.map(l=>({id:l.id,size:l.size,color:l.color,qty:l.qty})),
         meals:mealsRequired()>0 ? {
           dishes:Object.entries(meals.dishes)
             .filter(([,n])=>n>0)
@@ -792,6 +1043,7 @@ document.getElementById('checkoutBtn').addEventListener('click',async()=>{
   }
 });
 
+document.querySelectorAll('.merch-card[data-product="merch_tee"]').forEach(card=>renderTeeImgs(card,'Black'));
 renderCart();
 </script>
 </body>
