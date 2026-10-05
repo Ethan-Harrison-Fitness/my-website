@@ -54,13 +54,20 @@
     .srm select{width:100%;min-width:0;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);padding:10px 2px;text-align:center;outline:none;font-size:13px}
     .srm select:focus{border-color:var(--text)}
     #qrCanvas{background:#fff;padding:10px;border-radius:12px;max-width:100%}
+    .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .pmetric{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px}
+    .pmetric .num{font-family:Anton,Impact,sans-serif;font-size:28px}
+    .pmetric .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-top:8px;color:var(--muted)}
+    .pnrow{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px}
+    .pnrow:first-child{margin-top:0}
+    .pflame{color:var(--orange);font-weight:900}
     @media(min-width:700px){body{padding-top:28px}.app{padding:0 24px}}
   </style>
 </head>
 <body>
-<div class="app">
+<div class="app" id="builderView">
   <div class="brandbar"><img class="brandlogo" src="data:image/png;base64,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" alt="EH Fitness"><div class="pill">Coach tool</div></div>
-  <div class="hero"><div class="eyebrow">Plan builder</div><h1>Build a client plan.</h1><p class="muted">Pick a template, add exercises with sets and reps for each day, then send the client their link. Opening it loads the plan into their log.</p></div>
+  <div class="hero"><div class="eyebrow">Plan builder</div><h1>Build a client plan.</h1><p class="muted">Pick a template, program each session with its own exercises, sets, and reps, then send the client their link. Opening it loads the plan into their log.</p></div>
 
   <label for="clientName">Client first name</label>
   <input id="clientName" class="input" placeholder="Client first name" autocomplete="off">
@@ -68,7 +75,7 @@
   <div class="section-title"><h2>Template</h2></div>
   <div id="builderTemplates"></div>
 
-  <div id="builderDays"></div>
+  <div id="builderSessions"></div>
 
   <div class="section-title"><h2>My templates</h2></div>
   <div class="card">
@@ -76,13 +83,41 @@
     <div id="myTemplates" style="margin-top:6px"></div>
   </div>
 
+  <div class="section-title"><h2>My clients</h2></div>
+  <div class="card">
+    <p class="small muted" style="margin-top:0">Saved when you copy a client's link. Load one to tweak their plan and send an update.</p>
+    <div id="myClients"></div>
+  </div>
+
   <div class="section-title"><h2>Log page address</h2></div>
   <p class="small muted" style="margin-top:0">Where the client's log lives on your website. The plan is added to the end of it.</p>
   <input id="baseUrl" class="input" value="https://www.ethanharrisonfitness.com/training-log.html" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false">
 
+  <div class="section-title"><h2>Nutrition</h2></div>
+  <div class="card">
+    <p class="small muted" style="margin-top:0">Set daily targets and build their quick-log meals. They go out in the client link below, together with the workout plan.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div><label for="nutCal">Daily calories</label><input id="nutCal" class="input" inputmode="numeric" placeholder="2500" autocomplete="off"></div>
+      <div><label for="nutPro">Daily protein (g)</label><input id="nutPro" class="input" inputmode="numeric" placeholder="180" autocomplete="off"></div>
+      <div><label for="nutCarbs">Daily carbs (g)</label><input id="nutCarbs" class="input" inputmode="numeric" placeholder="250" autocomplete="off"></div>
+      <div><label for="nutFat">Daily fat (g)</label><input id="nutFat" class="input" inputmode="numeric" placeholder="70" autocomplete="off"></div>
+    </div>
+    <div class="section-title" style="margin-top:18px"><h3>Quick-log meals</h3></div>
+    <div id="nutMeals"></div>
+    <div class="row" style="margin-top:8px">
+      <input id="nutMealName" class="input" placeholder="Meal name" autocomplete="off" style="flex:1">
+      <button id="nutMealAdd" class="btn smallbtn" style="white-space:nowrap">Add</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px">
+      <input id="nutMealCal" class="input" placeholder="Cal" inputmode="numeric" autocomplete="off">
+      <input id="nutMealPro" class="input" placeholder="Protein g" inputmode="numeric" autocomplete="off">
+      <input id="nutMealCarbs" class="input" placeholder="Carbs g" inputmode="numeric" autocomplete="off">
+      <input id="nutMealFat" class="input" placeholder="Fat g" inputmode="numeric" autocomplete="off">
+    </div>
+  </div>
   <div class="section-title"><h2>Client link</h2></div>
   <div class="card">
-    <textarea id="planLink" class="input" readonly rows="4" placeholder="Add the client name and at least one exercise to make the link."></textarea>
+    <textarea id="planLink" class="input" readonly rows="4" placeholder="Add the client name and at least one exercise to make the link. Nutrition targets and meals are included automatically when you set them above."></textarea>
     <button id="copyLink" class="btn" style="margin-top:12px" disabled>Copy link</button>
   </div>
   <div class="card" style="text-align:center">
@@ -90,7 +125,19 @@
     <div style="margin-top:12px"><canvas id="qrCanvas"></canvas></div>
     <p class="small muted" id="qrNote" style="margin-bottom:0">The QR code shows up once the link is ready.</p>
   </div>
-  <div class="card"><p class="small" style="margin:0">Text the link to your client, or show them the QR code in person. When they open it, their log loads with the plan already set up: your exercises, sets, and reps on each day. They can still change things after.</p></div>
+  <div class="section-title"><h2>Client progress</h2></div>
+  <div class="card">
+    <p class="small muted" style="margin-top:0">When a client taps <strong>Share my progress with Ethan</strong> in their log, they text you a link. Open it and their progress shows up here as a dashboard: workouts, nutrition, weigh-ins, personal bests. You can also paste a link below.</p>
+    <textarea id="progressLink" class="input" rows="3" placeholder="Paste a client's progress link here"></textarea>
+    <button id="viewProgress" class="btn" style="margin-top:12px">View progress</button>
+  </div>
+  <div class="card"><p class="small" style="margin:0">Text the link to your client, or show them the QR code in person. When they open it, their log loads with the plan already set up: your exercises, sets, and reps on each day, plus their nutrition targets and quick-log meals if you set them. They can still change things after.</p></div>
+  <div style="height:20px"></div>
+</div>
+
+<div id="progressView" class="app hide">
+  <div class="brandbar"><button class="btn ghost smallbtn" id="progressBack">← Builder</button><div class="pill">Client progress</div></div>
+  <div id="progressBody"></div>
   <div style="height:20px"></div>
 </div>
 
@@ -1128,48 +1175,49 @@ var qrcodegen = new function() {
     {group:'Core',items:['Planks','Ab Crunch','Hanging Leg Raises','Knee Raises']},
     {group:'Other',items:['Push-Ups',"Farmer's Carries"]}
   ];
-  // Templates mirror the log file. ids and day keys must match exactly.
+  // Templates are starting points. Each one fills in the week's sessions
+  // (in order), and every session is programmed independently — Session 1
+  // and Session 3 can be completely different workouts.
   const TEMPLATES = [
-    {id:'upper-lower-3',name:'3-Day Upper / Lower',desc:'Upper and lower sessions rotate so both get attention.',days:[
-      {key:'upper',name:'Upper Body'},{key:'lower',name:'Lower Body'}]},
-    {id:'ppl-3',name:'3-Day Push / Pull / Legs',desc:'A simple three-day split for the whole body.',days:[
-      {key:'push',name:'Push'},{key:'pull',name:'Pull'},{key:'legs',name:'Legs'}]},
-    {id:'strength-4',name:'4-Day Strength Split',desc:'Four focused sessions across the week.',days:[
-      {key:'back-shoulders',name:'Back + Shoulders'},{key:'arms',name:'Arms'},{key:'legs',name:'Legs'},{key:'chest-tris',name:'Chest + Triceps'}]},
-    {id:'upper-rotation-4',name:'4-Day Upper Rotation',desc:'Three sessions, then one repeats. The repeat changes each week.',days:[
-      {key:'back-chest',name:'Back + Chest'},{key:'arms-shoulders',name:'Arms + Shoulders'},{key:'legs',name:'Legs'}]},
-    {id:'rotating-5',name:'5-Day Rotating Split',desc:'Four focused days, then one repeats. The repeat changes each week.',days:[
-      {key:'back-shoulders',name:'Back + Shoulders'},{key:'chest',name:'Chest'},{key:'legs',name:'Legs'},{key:'arms',name:'Arms'}]}
+    {id:'upper-lower-3',name:'3-Day Upper / Lower',desc:'Three sessions across the week. Each one is programmed separately.',sessions:['Upper A','Lower A','Upper B']},
+    {id:'ppl-3',name:'3-Day Push / Pull / Legs',desc:'A simple three-day split for the whole body.',sessions:['Push','Pull','Legs']},
+    {id:'strength-4',name:'4-Day Strength Split',desc:'Four focused sessions across the week.',sessions:['Back + Shoulders','Arms','Legs','Chest + Triceps']},
+    {id:'upper-rotation-4',name:'4-Day Upper Rotation',desc:'Four sessions across the week. Each one is programmed separately.',sessions:['Back + Chest','Arms + Shoulders','Legs','Upper Body']},
+    {id:'rotating-5',name:'5-Day Rotating Split',desc:'Five sessions across the week. Each one is programmed separately.',sessions:['Back + Shoulders','Chest','Legs','Arms','Full Body']}
   ];
   const FLAT = EXERCISE_LIBRARY.flatMap(g=>g.items);
   const REST_OPTIONS=[30,60,90,120,180,240];
   const normRest=v=>REST_OPTIONS.includes(v)?v:90;
-  const plan = {clientName:'',templateId:null,days:{}};
-  let modalDayKey = null;
+  const plan = {clientName:'',templateId:null,sessions:[]};
+  let modalSession = null;
 
   function esc(value){return String(value??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
   function toast(msg='Saved'){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1800)}
-  function currentTemplate(){return TEMPLATES.find(t=>t.id===plan.templateId)}
-  function dayItems(key){return plan.days[key]||(plan.days[key]=[])}
+  function sessionItems(si){return plan.sessions[si]?plan.sessions[si].items:[]}
   function refLabel(ref){return typeof ref==='number'?FLAT[ref]:ref.c}
 
   function renderTemplates(){
     document.getElementById('builderTemplates').innerHTML=TEMPLATES.map(t=>`<button class="choice ${plan.templateId===t.id?'selected':''}" data-btemplate="${t.id}"><strong>${esc(t.name)}</strong><span>${esc(t.desc)}</span></button>`).join('');
   }
   function selectTemplate(id){
-    plan.templateId=id;plan.days={};
-    renderTemplates();renderDays();updateOutput();
+    const t=TEMPLATES.find(x=>x.id===id);if(!t)return;
+    plan.templateId=id;
+    plan.sessions=t.sessions.map(name=>({name,items:[]}));
+    renderTemplates();renderSessions();updateOutput();
   }
-  function exerciseRow(dayKey,it,i){
+  function exerciseRow(si,it,i){
     const rest=normRest(it.rest);
-    return `<div class="srm"><span>${esc(refLabel(it.ref))}</span><div><span class="lbl">Sets</span><input type="number" min="1" max="20" value="${it.sets}" data-bsets="${dayKey}:${i}" aria-label="Sets" inputmode="numeric"></div><div><span class="lbl">Reps</span><input type="number" min="1" max="500" value="${it.reps}" data-breps="${dayKey}:${i}" aria-label="Reps" inputmode="numeric"></div><div><span class="lbl">Rest</span><select data-brest="${dayKey}:${i}" aria-label="Rest seconds">${REST_OPTIONS.map(v=>`<option value="${v}"${v===rest?' selected':''}>${v}s</option>`).join('')}</select></div><button class="remove" data-bremove="${dayKey}:${i}" aria-label="Remove exercise">×</button></div>`;
+    return `<div class="srm"><span>${esc(refLabel(it.ref))}</span><div><span class="lbl">Sets</span><input type="number" min="1" max="20" value="${it.sets}" data-ssets="${si}:${i}" aria-label="Sets" inputmode="numeric"></div><div><span class="lbl">Reps</span><input type="number" min="1" max="500" value="${it.reps}" data-sreps="${si}:${i}" aria-label="Reps" inputmode="numeric"></div><div><span class="lbl">Rest</span><select data-srest="${si}:${i}" aria-label="Rest seconds">${REST_OPTIONS.map(v=>`<option value="${v}"${v===rest?' selected':''}>${v}s</option>`).join('')}</select></div><button class="remove" data-sremove="${si}:${i}" aria-label="Remove exercise">×</button></div>`;
   }
-  function renderDays(){
-    const t=currentTemplate(),el=document.getElementById('builderDays');
-    if(!t){el.innerHTML='<div class="card"><p class="small muted" style="margin:0">Pick a template above to start adding exercises.</p></div>';return;}
-    el.innerHTML='<div class="section-title"><h2>Days</h2></div>'+t.days.map(d=>{
-      const items=dayItems(d.key);
-      return `<div class="card"><div class="row between"><h3>${esc(d.name)}</h3><button class="btn ghost smallbtn" data-badd="${d.key}">+ Add</button></div>${items.length?items.map((it,i)=>exerciseRow(d.key,it,i)).join(''):'<div class="empty">No exercises yet.</div>'}</div>`;
+  function renderSessions(){
+    const el=document.getElementById('builderSessions');
+    if(!plan.templateId){el.innerHTML='<div class="card"><p class="small muted" style="margin:0">Pick a template above to start building sessions.</p></div>';return;}
+    el.innerHTML='<div class="section-title"><h2>Sessions</h2>'+(plan.sessions.length<7?'<button class="btn ghost smallbtn" data-sadd>Add session</button>':'')+'</div>'+plan.sessions.map((s,si)=>{
+      const items=sessionItems(si);
+      return `<div class="card"><div class="row between"><span class="eyebrow">Session ${si+1}</span>${plan.sessions.length>1?`<button class="remove" data-sremove-session="${si}" aria-label="Remove session">×</button>`:''}</div>
+      <input class="input" data-sname="${si}" value="${esc(s.name)}" placeholder="Session name, like Legs (quad focus)" autocomplete="off" style="margin-top:10px">
+      <div style="margin-top:4px">${items.length?items.map((it,i)=>exerciseRow(si,it,i)).join(''):'<div class="empty">No exercises yet.</div>'}</div>
+      <button class="btn ghost smallbtn" data-badd="${si}" style="margin-top:10px">+ Add exercise</button></div>`;
     }).join('');
   }
   /* ---------- Exercise picker ---------- */
@@ -1184,7 +1232,7 @@ var qrcodegen = new function() {
   }
   function renderPicker(){
     const q=(document.getElementById('librarySearch').value||'').trim().toLowerCase();
-    const have=new Set(dayItems(modalDayKey).map(it=>refLabel(it.ref).toLowerCase()));
+    const have=new Set((plan.sessions[modalSession]?plan.sessions[modalSession].items:[]).map(it=>refLabel(it.ref).toLowerCase()));
     const groups=EXERCISE_LIBRARY.map((g,gi)=>({group:g.group,items:g.items.map((x,i)=>({x,idx:FLAT.indexOf(x)})).filter(o=>!q||o.x.toLowerCase().includes(q))})).filter(g=>g.items.length);
     document.getElementById('libraryList').innerHTML=groups.length?groups.map(g=>
       `<div class="libgroup"><span class="eyebrow">${esc(g.group)}</span>${g.items.map(o=>{
@@ -1192,27 +1240,26 @@ var qrcodegen = new function() {
         return `<button class="choice libitem ${done?'selected':''}" data-bpick="${o.idx}" ${done?'disabled':''}><strong>${esc(o.x)}${done?'<span class="tick">✓</span>':''}</strong></button>`
       }).join('')}</div>`).join(''):'<div class="libempty">No exercises match that search.</div>';
   }
-  function openPicker(dayKey){
-    modalDayKey=dayKey;
+  function openPicker(si){
+    modalSession=Number(si);
     document.getElementById('librarySearch').value='';document.getElementById('newExerciseName').value='';
     renderPicker();document.getElementById('exerciseModal').classList.add('show');
     document.querySelector('#exerciseModal .sheet').scrollTop=0;
   }
-  function closePicker(){document.getElementById('exerciseModal').classList.remove('show');modalDayKey=null}
+  function closePicker(){document.getElementById('exerciseModal').classList.remove('show');modalSession=null}
   /* ---------- Saved plan templates ---------- */
   const TPL_KEY='ehPlanTemplates.v1';
   let renamingIdx=-1;
   function loadTemplates(){try{const t=JSON.parse(localStorage.getItem(TPL_KEY));return Array.isArray(t)?t:[]}catch(e){return[]}}
   function storeTemplates(list){try{localStorage.setItem(TPL_KEY,JSON.stringify(list));return true}catch(e){toast('Could not save templates on this device');return false}}
   function snapshotTemplate(){
-    const t=currentTemplate();if(!t)return null;
-    const days={};let count=0;
-    t.days.forEach(d=>{
-      const items=(plan.days[d.key]||[]).map(x=>({ref:x.ref,sets:Math.max(1,Math.min(20,x.sets|0)),reps:Math.max(1,Math.min(500,x.reps|0)),rest:normRest(x.rest)}));
-      if(items.length){days[d.key]=items;count+=items.length;}
-    });
-    if(!count)return null;
-    return {name:'',templateId:t.id,days:JSON.parse(JSON.stringify(days))};
+    if(!plan.templateId)return null;
+    const sessions=plan.sessions.map(s=>({
+      name:String(s.name||'').slice(0,40),
+      items:s.items.map(x=>({ref:x.ref,sets:Math.max(1,Math.min(20,x.sets|0)),reps:Math.max(1,Math.min(500,x.reps|0)),rest:normRest(x.rest)}))
+    })).filter(s=>s.items.length);
+    if(!sessions.length)return null;
+    return {name:'',templateId:plan.templateId,sessions:JSON.parse(JSON.stringify(sessions))};
   }
   function saveTemplate(){
     const name=(document.getElementById('templateName').value||'').trim();
@@ -1233,7 +1280,7 @@ var qrcodegen = new function() {
     if(!list.length){el.innerHTML='<p class="small muted" style="margin:0">No saved templates yet. Build a plan and save it to reuse it.</p>';return;}
     el.innerHTML=list.map((t,i)=>{
       const tn=(TEMPLATES.find(x=>x.id===t.templateId)||{}).name||'Plan';
-      const count=Object.values(t.days||{}).reduce((n,a)=>n+(a?a.length:0),0);
+      const count=(t.sessions||[]).reduce((n,s)=>n+(s.items?s.items.length:0),0);
       if(renamingIdx===i){
         return `<div style="padding:10px 0;border-top:1px solid var(--line)"><div class="row"><input class="input" id="renameInput" value="${esc(t.name)}" autocomplete="off" style="flex:1"><button class="btn smallbtn" data-trsave="${i}">Save</button><button class="btn ghost smallbtn" data-trcancel>Cancel</button></div></div>`;
       }
@@ -1243,12 +1290,13 @@ var qrcodegen = new function() {
   function loadTemplate(i){
     const t=loadTemplates()[i];if(!t)return;
     if(!TEMPLATES.some(x=>x.id===t.templateId)){toast('That template no longer matches');return;}
+    if(!Array.isArray(t.sessions)||!t.sessions.length){toast('That template is empty');return;}
     plan.templateId=t.templateId;
-    plan.days=JSON.parse(JSON.stringify(t.days));
+    plan.sessions=JSON.parse(JSON.stringify(t.sessions));
     plan.clientName='';
     document.getElementById('clientName').value='';
     renamingIdx=-1;
-    renderTemplates();renderDays();renderMyTemplates();updateOutput();
+    renderTemplates();renderSessions();renderMyTemplates();updateOutput();
     toast('Template loaded. Add the client name.');
   }
   function deleteTemplate(i){
@@ -1256,30 +1304,114 @@ var qrcodegen = new function() {
     if(renamingIdx===i)renamingIdx=-1;
     renderMyTemplates();toast('Template deleted');
   }
-  function addToDay(dayKey,ref){
-    const items=dayItems(dayKey),label=refLabel(ref);
-    if(items.some(x=>refLabel(x.ref).toLowerCase()===label.toLowerCase())){toast('Already on this day');return;}
+  /* ---------- My clients ----------
+    Every time the coach copies a client link, the exact plan that went out
+    (template, days, nutrition) is saved under the client name. Loading a
+    client puts their plan back into the builder so it can be tweaked and
+    re-sent, instead of rebuilt from scratch.
+  */
+  const CLIENTS_KEY='ehClientPlans.v1';
+  function loadClients(){try{const c=JSON.parse(localStorage.getItem(CLIENTS_KEY));return Array.isArray(c)?c:[]}catch(e){return[]}}
+  function storeClients(list){try{localStorage.setItem(CLIENTS_KEY,JSON.stringify(list));return true}catch(e){toast('Could not save on this device');return false}}
+  function snapshotClientPlan(){
+    const p=buildPlanObject();
+    if(!p)return null;
+    return {
+      name:p.name,
+      templateId:plan.templateId,
+      sessions:p.sessions.map(s=>({name:s.n,items:s.items.map(it=>({ref:it.e,sets:it.s,reps:it.r,rest:it.rest||90}))})),
+      nut:p.nutrition?{cal:p.nutrition.targets.cal,protein:p.nutrition.targets.protein,carbs:p.nutrition.targets.carbs,fat:p.nutrition.targets.fat,
+        meals:p.nutrition.library.map(m=>({n:m.n,cal:m.cal,protein:m.protein,carbs:m.carbs,fat:m.fat}))}
+        :{cal:0,protein:0,carbs:0,fat:0,meals:[]},
+      savedAt:Date.now()
+    };
+  }
+  function saveClientPlan(){
+    const snap=snapshotClientPlan();
+    if(!snap)return;
+    const list=loadClients();
+    const ix=list.findIndex(c=>String(c.name).toLowerCase()===snap.name.toLowerCase());
+    if(ix>=0)list[ix]=snap;else list.push(snap);
+    list.sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+    if(storeClients(list))renderClients();
+  }
+  function renderClients(){
+    const list=loadClients(),el=document.getElementById('myClients');
+    if(!list.length){el.innerHTML='<p class="small muted" style="margin:0">No clients saved yet. Build a plan and copy the link, and they will show up here.</p>';return;}
+    el.innerHTML=list.map((c,i)=>{
+      const tn=(TEMPLATES.find(x=>x.id===c.templateId)||{}).name||'Plan';
+      const count=(c.sessions||[]).reduce((n,s)=>n+(s.items?s.items.length:0),0);
+      const when=c.savedAt?new Date(c.savedAt).toLocaleDateString(undefined,{month:'short',day:'numeric'}):'';
+      return `<div class="row between" style="padding:10px 0;border-top:1px solid var(--line)"><span><strong>${esc(c.name)}</strong><br><span class="small muted">${esc(tn)} · ${count} exercise${count===1?'':'s'}${when?` · sent ${when}`:''}</span></span><span class="row"><button class="btn ghost smallbtn" data-cload="${i}">Load</button><button class="remove" data-cdelete="${i}" aria-label="Remove client">×</button></span></div>`;
+    }).join('');
+  }
+  function loadClient(i){
+    const c=loadClients()[i];if(!c)return;
+    if(!Array.isArray(c.sessions)||!c.sessions.length){toast('That saved plan is empty');return;}
+    plan.templateId=c.templateId||null;
+    plan.sessions=JSON.parse(JSON.stringify(c.sessions));
+    plan.clientName=c.name;
+    document.getElementById('clientName').value=c.name;
+    const n=c.nut||{};
+    if(n.cal||n.protein||n.carbs||n.fat||(n.meals&&n.meals.length)){
+      const num=(v,max)=>Math.max(0,Math.min(max,parseInt(v,10)||0));
+      nut={cal:num(n.cal,20000),protein:num(n.protein,2000),carbs:num(n.carbs,2000),fat:num(n.fat,2000),
+        meals:Array.isArray(n.meals)?n.meals.map(m=>({n:String(m.n||'').slice(0,60),cal:num(m.cal,20000),protein:num(m.protein,2000),carbs:num(m.carbs,2000),fat:num(m.fat,2000)})):[]};
+      storeNut();
+      document.getElementById('nutCal').value=nut.cal||'';
+      document.getElementById('nutPro').value=nut.protein||'';
+      document.getElementById('nutCarbs').value=nut.carbs||'';
+      document.getElementById('nutFat').value=nut.fat||'';
+      renderNutMeals();
+    }
+    renderTemplates();renderSessions();renderClients();updateOutput();
+    toast("Loaded "+c.name+"'s plan");
+  }
+  function deleteClient(i){
+    const list=loadClients();const gone=list.splice(i,1)[0];storeClients(list);renderClients();
+    toast((gone&&gone.name?gone.name:'Client')+' removed');
+  }
+  function addToSession(si,ref){
+    const s=plan.sessions[si];if(!s)return;
+    const items=s.items,label=refLabel(ref);
+    if(items.some(x=>refLabel(x.ref).toLowerCase()===label.toLowerCase())){toast('Already in this session');return;}
     items.push({ref,sets:3,reps:10,rest:90});
-    renderDays();updateOutput();renderPicker();toast('Exercise added');
+    renderSessions();updateOutput();renderPicker();toast('Exercise added');
   }
   function addCustom(){
     let name=(document.getElementById('newExerciseName').value||'').trim();
     if(!name){toast('Add an exercise name');return;}
     const match=libraryNameFor(name);
-    addToDay(modalDayKey,match?flatIndex(match):{c:name});
+    addToSession(modalSession,match?flatIndex(match):{c:name});
     document.getElementById('newExerciseName').value='';
   }
-  /* ---------- Link + QR output ---------- */
+  /* ---------- Link + QR output ----------
+    PLAN FORMAT v2: the client link carries the week's sessions, each
+    programmed independently:
+      #plan=encodeURIComponent(JSON.stringify(
+        {v:2,name:'Client',sessions:[{n:'Upper A',items:[{e:0,s:4,r:10,rest:90}]}],
+         nutrition:{...}}))
+    - v: format version (2)
+    - sessions: 1 to 7, in weekly order; n = session name
+    - items: e = exercise library index (or {c:'Custom Name'}),
+      s = sets, r = reps, rest = seconds (only when not the 90s default)
+    The training log parses v2 and still accepts v1 links.
+  */
   function buildPlanObject(){
-    const t=currentTemplate();if(!t)return null;
     const name=plan.clientName.trim();if(!name)return null;
-    const days={};let count=0;
-    t.days.forEach(d=>{
-      const items=(plan.days[d.key]||[]).map(x=>{const o={e:x.ref,s:Math.max(1,Math.min(20,x.sets|0)),r:Math.max(1,Math.min(500,x.reps|0))};const rv=normRest(x.rest);if(rv!==90)o.rest=rv;return o;}).filter(x=>x.s>0&&x.r>0);
-      if(items.length){days[d.key]=items;count+=items.length;}
+    const sessions=[];
+    plan.sessions.forEach(s=>{
+      const items=s.items.map(x=>{const o={e:x.ref,s:Math.max(1,Math.min(20,x.sets|0)),r:Math.max(1,Math.min(500,x.reps|0))};const rv=normRest(x.rest);if(rv!==90)o.rest=rv;return o;}).filter(x=>x.s>0&&x.r>0);
+      if(!items.length)return;
+      const nm=String(s.name||'').trim().slice(0,40);
+      sessions.push({n:nm||('Session '+(sessions.length+1)),items});
     });
-    if(!count)return null;
-    return {v:1,name,templateId:t.id,days};
+    if(!sessions.length)return null;
+    const p={v:2,name,sessions};
+    // Nutrition rides in the same link when targets are set.
+    const nut=buildNutObject();
+    if(nut)p.nutrition=nut;
+    return p;
   }
   function buildLink(){
     const p=buildPlanObject();if(!p)return '';
@@ -1309,19 +1441,202 @@ var qrcodegen = new function() {
   function copyLink(){
     const ta=document.getElementById('planLink');
     if(!ta.value){toast('Make the link first');return;}
+    saveClientPlan();
     const done=()=>toast('Link copied');
     const fallback=()=>{ta.select();try{document.execCommand('copy');done();}catch(e){toast('Copy it manually');}};
     if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(ta.value).then(done,fallback);
     else fallback();
   }
+  /* ---------- Nutrition ----------
+    The coach sets calorie + protein targets and a quick-log meal list.
+    buildPlanObject() nests it into the one client link as plan.nutrition,
+    so the client gets the workout plan and the nutrition together.
+    The coach's own setup persists here in localStorage so it only has
+    to be typed once.
+  */
+  const NUT_KEY='ehCoachNutrition:v1';
+  const NUT_BOWLS=[
+    {n:'Honey Garlic Bowl',cal:470,protein:40,carbs:45,fat:12},
+    {n:'Cheeseburger Bowl',cal:445,protein:47,carbs:28,fat:14},
+    {n:'Fajita Bowl',cal:420,protein:48,carbs:35,fat:8},
+    {n:'Turkey Gyro Bowl',cal:420,protein:35,carbs:19,fat:19}
+  ];
+  function loadNut(){
+    try{
+      const n=JSON.parse(localStorage.getItem(NUT_KEY));
+      if(n&&typeof n==='object'){
+        const num=v=>Math.max(0,v|0)||0;
+        const seed={};NUT_BOWLS.forEach(b=>{seed[b.n]=b;});
+        const meals=Array.isArray(n.meals)?n.meals.filter(m=>m&&typeof m.n==='string').map(m=>{
+          const s=seed[m.n];
+          // Fill in the official bowl macros when the saved meal still has none.
+          if(s&&(num(m.cal)+num(m.protein)+num(m.carbs)+num(m.fat)===0))return {n:m.n,cal:s.cal,protein:s.protein,carbs:s.carbs,fat:s.fat};
+          return {n:String(m.n).slice(0,60),cal:num(m.cal),protein:num(m.protein),carbs:num(m.carbs),fat:num(m.fat)};
+        }):[];
+        return {cal:num(n.cal),protein:num(n.protein),carbs:num(n.carbs),fat:num(n.fat),meals};
+      }
+    }catch(e){}
+    return {cal:0,protein:0,carbs:0,fat:0,meals:NUT_BOWLS.map(b=>({n:b.n,cal:b.cal,protein:b.protein,carbs:b.carbs,fat:b.fat}))};
+  }
+  let nut=loadNut();
+  function storeNut(){try{localStorage.setItem(NUT_KEY,JSON.stringify(nut));}catch(e){toast('Could not save on this device');}}
+  function renderNutMeals(){
+    const el=document.getElementById('nutMeals');
+    const macro=m=>{const p=[];if(m.cal)p.push(m.cal.toLocaleString()+' cal');if(m.protein)p.push(m.protein+'g protein');if(m.carbs)p.push(m.carbs+'g carbs');if(m.fat)p.push(m.fat+'g fat');return p.join(' · ');};
+    el.innerHTML=nut.meals.length?nut.meals.map((m,i)=>{
+      return `<div class="row between" style="padding:8px 0;border-bottom:1px solid var(--line)"><div><strong>${esc(m.n)}</strong><div class="small muted">${esc(macro(m)||'Add the macros for this meal')}</div></div><button class="btn ghost smallbtn" data-nutremove="${i}">Remove</button></div>`;
+    }).join(''):'<p class="small muted" style="margin:0">No quick-log meals yet.</p>';
+  }
+  function addNutMeal(){
+    const n=document.getElementById('nutMealName').value.trim().slice(0,60);
+    if(!n){toast('Name the meal');return;}
+    const num=(id,max)=>Math.max(0,Math.min(max,parseInt(document.getElementById(id).value,10)||0));
+    const cal=num('nutMealCal',20000),protein=num('nutMealPro',2000),carbs=num('nutMealCarbs',2000),fat=num('nutMealFat',2000);
+    nut.meals.push({n,cal,protein,carbs,fat});storeNut();renderNutMeals();updateOutput();
+    ['nutMealName','nutMealCal','nutMealPro','nutMealCarbs','nutMealFat'].forEach(id=>{document.getElementById(id).value='';});
+    toast('Meal added');
+  }
+  function buildNutObject(){
+    const num=(v,max)=>Math.max(0,Math.min(max,parseInt(v,10)||0));
+    const cal=num(nut.cal,20000),protein=num(nut.protein,2000),carbs=num(nut.carbs,2000),fat=num(nut.fat,2000);
+    if(!cal&&!protein&&!carbs&&!fat)return null;
+    return {v:1,targets:{cal,protein,carbs,fat},library:nut.meals.map(m=>({n:String(m.n).slice(0,60),cal:num(m.cal,20000),protein:num(m.protein,2000),carbs:num(m.carbs,2000),fat:num(m.fat,2000)})).slice(0,50)};
+  }
+  function initNut(){
+    document.getElementById('nutCal').value=nut.cal||'';
+    document.getElementById('nutPro').value=nut.protein||'';
+    document.getElementById('nutCarbs').value=nut.carbs||'';
+    document.getElementById('nutFat').value=nut.fat||'';
+    renderNutMeals();updateOutput();
+  }
+  /* ---------- Client progress ----------
+    Reads a #progress= link shared by a client (their log encodes a compact
+    snapshot: last 14 days of training, last 7 days of nutrition, recent
+    weigh-ins) and renders it as a read-only dashboard. Works from the URL
+    hash on load, or from a pasted link in the Client progress section.
+  */
+  function b64urlDecode(s){
+    s=String(s||'').replace(/-/g,'+').replace(/_/g,'/');
+    while(s.length%4)s+='=';
+    const bin=atob(s),bytes=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+  function sanitizeProgress(p){
+    try{
+      if(!p||p.v!==1)return null;
+      const num=(v,max)=>{v=parseFloat(v);return isFinite(v)?Math.max(0,Math.min(max,v)):0;};
+      const str=(v,max)=>String(v==null?'':v).slice(0,max);
+      const dateOk=v=>/^\d{4}-\d{2}-\d{2}$/.test(v||'');
+      const workouts=Array.isArray(p.workouts)?p.workouts.slice(0,14).map(w=>({
+        d:dateOk(w&&w.d)?w.d:'',
+        n:str(w&&w.n,40),
+        ex:Array.isArray(w&&w.ex)?w.ex.slice(0,12).map(e=>(Array.isArray(e)?[str(e[0],40),num(e[1],50)|0,num(e[2],2000),num(e[3],500)|0]:null)).filter(Boolean):[]
+      })).filter(w=>w.d):[];
+      const nutrition=Array.isArray(p.nutrition)?p.nutrition.slice(0,7).map(n=>({
+        d:dateOk(n&&n.d)?n.d:'',
+        cal:num(n&&n.cal,20000),p:num(n&&n.p,2000),c:num(n&&n.c,2000),f:num(n&&n.f,2000),
+        w:num(n&&n.w,400),meals:num(n&&n.meals,50)|0
+      })).filter(n=>n.d):[];
+      const tg=(p&&p.targets)||{};
+      return {
+        name:str(p.name,40),
+        goal:num(p.goal,14)|0,
+        streak:num(p.streak,520)|0,
+        at:Math.round(num(p.at,4102444800000)),
+        targets:{cal:num(tg.cal,20000),p:num(tg.p,2000)},
+        workouts:workouts,
+        nutrition:nutrition,
+        onTarget:(p.onTarget==null?null:Math.max(0,Math.min(7,parseInt(p.onTarget,10)||0))),
+        weighins:Array.isArray(p.weighins)?p.weighins.slice(-5).map(x=>({d:dateOk(x&&x.d)?x.d:'',w:num(x&&x.w,1500)})).filter(x=>x.d&&x.w>0):[],
+        pbs:Array.isArray(p.pbs)?p.pbs.slice(0,8).map(x=>str(x,60)).filter(Boolean):[]
+      };
+    }catch(e){return null;}
+  }
+  function progressPayloadFromText(text){
+    const m=String(text||'').match(/#progress=([A-Za-z0-9\-_]+)/);
+    if(!m)return null;
+    try{return sanitizeProgress(JSON.parse(b64urlDecode(m[1])));}catch(e){return null;}
+  }
+  function fmtProgDate(key){
+    try{const parts=key.split('-').map(Number);return new Date(parts[0],parts[1]-1,parts[2]).toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});}catch(e){return key;}
+  }
+  function trimProgNum(n){return String(Number(n));}
+  function renderProgressDashboard(p){
+    const wkStart=new Date();wkStart.setHours(0,0,0,0);wkStart.setDate(wkStart.getDate()-((wkStart.getDay()+6)%7));
+    const thisWk=p.workouts.filter(w=>{const a=w.d.split('-').map(Number);return new Date(a[0],a[1]-1,a[2])>=wkStart;});
+    const nutDays=p.nutrition.filter(n=>n.meals>0);
+    const avg=k=>nutDays.length?Math.round(nutDays.reduce((s,n)=>s+n[k],0)/nutDays.length):0;
+    const wDays=p.nutrition.filter(n=>n.w>0);
+    const wAvg=wDays.length?Math.round(wDays.reduce((s,n)=>s+n.w,0)/wDays.length):0;
+    const wi=p.weighins;
+    let wiLine='<span class="muted">No weigh-ins shared</span>';
+    if(wi.length){
+      const last=wi[wi.length-1],first=wi[0],chg=Math.round((last.w-first.w)*10)/10;
+      wiLine=`<strong>${trimProgNum(last.w)} lb</strong><span class="small muted"> · ${fmtProgDate(last.d)}${wi.length>1?` (${chg>0?'+':''}${chg} lb since ${fmtProgDate(first.d)})`:''}</span>`;
+    }
+    const exLine=e=>{
+      const best=e[2]>0?` · best ${trimProgNum(e[2])} × ${e[3]}`:'';
+      return `<div class="small" style="padding:5px 0;border-top:1px solid var(--line)"><strong>${esc(e[0])}</strong><span class="muted"> — ${e[1]} set${e[1]===1?'':'s'}${best}</span></div>`;
+    };
+    const shared=p.at?new Date(p.at).toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'}):'';
+    document.getElementById('progressBody').innerHTML=`
+      <div class="hero"><div class="eyebrow">Client progress${shared?` · shared ${esc(shared)}`:''}</div><h1>${esc(p.name||'Client')}</h1>
+      <p class="muted">${p.streak>0?`<span class="pflame">🔥 ${p.streak}-week streak</span> · `:''}Goal ${thisWk.length}/${p.goal||'–'} workouts this week</p></div>
+      <div class="pgrid">
+        <div class="pmetric"><div class="num">${thisWk.length}/${p.goal||'–'}</div><div class="lbl">Workouts this week</div></div>
+        <div class="pmetric"><div class="num">${p.onTarget==null?'–':p.onTarget+'/7'}</div><div class="lbl">Days on target</div></div>
+      </div>
+      <div class="section-title"><h2>Workouts</h2><span class="small muted">last 14 days</span></div>
+      ${p.workouts.length?p.workouts.map(w=>`
+        <div class="card"><div class="row between"><strong>${esc(w.n||'Workout')}</strong><span class="small muted">${fmtProgDate(w.d)}</span></div>
+        <div style="margin-top:6px">${w.ex.length?w.ex.map(exLine).join(''):'<p class="small muted" style="margin:6px 0 0">No exercises logged</p>'}</div></div>`).join('')
+        :'<div class="card"><p class="small muted" style="margin:0">No workouts in the last 14 days.</p></div>'}
+      <div class="section-title"><h2>Nutrition</h2><span class="small muted">last 7 days</span></div>
+      <div class="card">
+        ${nutDays.length?`<div class="pnrow"><strong>Avg calories</strong><span class="muted">${avg('cal').toLocaleString()}${p.targets.cal?` / ${p.targets.cal.toLocaleString()}`:''}</span></div>
+        <div class="pnrow"><strong>Avg protein</strong><span class="muted">${avg('p')}g${p.targets.p?` / ${p.targets.p}g`:''}</span></div>
+        <div class="pnrow"><strong>Avg carbs / fat</strong><span class="muted">${avg('c')}g / ${avg('f')}g</span></div>
+        <div class="pnrow"><strong>Water</strong><span class="muted">${wAvg} oz/day</span></div>
+        <div class="pnrow"><strong>Food logged</strong><span class="muted">${nutDays.length}/7 days</span></div>`
+        :'<p class="small muted" style="margin:0">No food logged in the last 7 days.</p>'}
+      </div>
+      <div class="section-title"><h2>Weigh-ins</h2></div>
+      <div class="card"><p style="margin:0">${wiLine}</p></div>
+      ${p.pbs.length?`<div class="section-title"><h2>Personal bests</h2><span class="small muted">this week</span></div>
+      <div class="card">${p.pbs.map(b=>`<div class="small" style="padding:5px 0;border-top:1px solid var(--line)"><span class="pflame">+1%</span> ${esc(b)}</div>`).join('')}</div>`:''}
+    `;
+    document.getElementById('builderView').classList.add('hide');
+    document.getElementById('progressView').classList.remove('hide');
+    window.scrollTo(0,0);
+  }
+  function showProgressFromText(text){
+    const p=progressPayloadFromText(text);
+    if(!p){toast('Could not read that link');return;}
+    renderProgressDashboard(p);
+  }
+  function initProgressView(){
+    const p=progressPayloadFromText(location.hash||'');
+    if(p)renderProgressDashboard(p);
+  }
   /* ---------- Events ---------- */
   document.addEventListener('click',e=>{
     const tpl=e.target.closest('[data-btemplate]');if(tpl){selectTemplate(tpl.dataset.btemplate);return;}
     const add=e.target.closest('[data-badd]');if(add){openPicker(add.dataset.badd);return;}
-    const pick=e.target.closest('[data-bpick]');if(pick&&!pick.disabled){addToDay(modalDayKey,Number(pick.dataset.bpick));return;}
-    const rem=e.target.closest('[data-bremove]');if(rem){
-      const [dayKey,i]=rem.dataset.bremove.split(':');dayItems(dayKey).splice(Number(i),1);
-      renderDays();updateOutput();toast('Exercise removed');return;
+    const pick=e.target.closest('[data-bpick]');if(pick&&!pick.disabled){addToSession(modalSession,Number(pick.dataset.bpick));return;}
+    const rem=e.target.closest('[data-sremove]');if(rem){
+      const [si,i]=rem.dataset.sremove.split(':');const items=sessionItems(Number(si));items.splice(Number(i),1);
+      renderSessions();updateOutput();toast('Exercise removed');return;
+    }
+    const sadd=e.target.closest('[data-sadd]');if(sadd){
+      if(plan.sessions.length>=7){toast('Seven sessions is the max');return;}
+      plan.sessions.push({name:'Session '+(plan.sessions.length+1),items:[]});
+      renderSessions();updateOutput();toast('Session added');return;
+    }
+    const srem=e.target.closest('[data-sremove-session]');if(srem){
+      if(plan.sessions.length<=1){toast('Keep at least one session');return;}
+      plan.sessions.splice(Number(srem.dataset.sremoveSession),1);
+      renderSessions();updateOutput();toast('Session removed');return;
     }
     if(e.target.closest('[data-close-modal]')){closePicker();return;}
     const tload=e.target.closest('[data-tload]');if(tload){loadTemplate(Number(tload.dataset.tload));return;}
@@ -1336,29 +1651,45 @@ var qrcodegen = new function() {
     }
     const trcancel=e.target.closest('[data-trcancel]');if(trcancel){renamingIdx=-1;renderMyTemplates();return;}
     const tdel=e.target.closest('[data-tdelete]');if(tdel){deleteTemplate(Number(tdel.dataset.tdelete));return;}
+    const cload=e.target.closest('[data-cload]');if(cload){loadClient(Number(cload.dataset.cload));return;}
+    const cdel=e.target.closest('[data-cdelete]');if(cdel){deleteClient(Number(cdel.dataset.cdelete));return;}
+    const nrem=e.target.closest('[data-nutremove]');if(nrem){nut.meals.splice(Number(nrem.dataset.nutremove),1);storeNut();renderNutMeals();updateOutput();toast('Meal removed');return;}
   });
   document.addEventListener('input',e=>{
     if(e.target.id==='clientName'){plan.clientName=e.target.value;updateOutput();return;}
     if(e.target.id==='baseUrl'){updateOutput();return;}
+    if(e.target.id==='nutCal'){nut.cal=parseInt(e.target.value,10)||0;storeNut();updateOutput();return;}
+    if(e.target.id==='nutPro'){nut.protein=parseInt(e.target.value,10)||0;storeNut();updateOutput();return;}
+    if(e.target.id==='nutCarbs'){nut.carbs=parseInt(e.target.value,10)||0;storeNut();updateOutput();return;}
+    if(e.target.id==='nutFat'){nut.fat=parseInt(e.target.value,10)||0;storeNut();updateOutput();return;}
     if(e.target.id==='librarySearch'){renderPicker();return;}
-    const bs=e.target.dataset?e.target.dataset.bsets:null,br=e.target.dataset?e.target.dataset.breps:null;
-    if(bs){const [dayKey,i]=bs.split(':');const it=dayItems(dayKey)[Number(i)];if(it){it.sets=Math.max(1,Math.min(20,parseInt(e.target.value,10)||1));updateOutput();}return;}
-    if(br){const [dayKey,i]=br.split(':');const it=dayItems(dayKey)[Number(i)];if(it){it.reps=Math.max(1,Math.min(500,parseInt(e.target.value,10)||1));updateOutput();}return;}
+    const bs=e.target.dataset?e.target.dataset.ssets:null,br=e.target.dataset?e.target.dataset.sreps:null;
+    if(e.target.dataset&&e.target.dataset.sname!==undefined){const si=Number(e.target.dataset.sname);if(plan.sessions[si]){plan.sessions[si].name=e.target.value.slice(0,40);updateOutput();}return;}
+    if(bs){const [si,i]=bs.split(':');const it=sessionItems(Number(si))[Number(i)];if(it){it.sets=Math.max(1,Math.min(20,parseInt(e.target.value,10)||1));updateOutput();}return;}
+    if(br){const [si,i]=br.split(':');const it=sessionItems(Number(si))[Number(i)];if(it){it.reps=Math.max(1,Math.min(500,parseInt(e.target.value,10)||1));updateOutput();}return;}
   });
   document.addEventListener('change',e=>{
-    const br=e.target.dataset?e.target.dataset.brest:null;if(!br)return;
-    const [dayKey,i]=br.split(':');const it=dayItems(dayKey)[Number(i)];if(!it)return;
+    const br=e.target.dataset?e.target.dataset.srest:null;if(!br)return;
+    const [si,i]=br.split(':');const it=sessionItems(Number(si))[Number(i)];if(!it)return;
     it.rest=normRest(parseInt(e.target.value,10));updateOutput();
   });
   document.getElementById('saveExercise').addEventListener('click',addCustom);
   document.getElementById('newExerciseName').addEventListener('keydown',e=>{if(e.key==='Enter')addCustom()});
   document.getElementById('librarySearch').addEventListener('input',renderPicker);
   document.getElementById('copyLink').addEventListener('click',copyLink);
+  document.getElementById('viewProgress').addEventListener('click',()=>showProgressFromText(document.getElementById('progressLink').value));
+  document.getElementById('progressBack').addEventListener('click',()=>{
+    try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
+    document.getElementById('progressView').classList.add('hide');
+    document.getElementById('builderView').classList.remove('hide');
+    window.scrollTo(0,0);
+  });
+  document.getElementById('nutMealAdd').addEventListener('click',addNutMeal);
   document.getElementById('saveTemplate').addEventListener('click',saveTemplate);
   document.getElementById('templateName').addEventListener('keydown',e=>{if(e.key==='Enter')saveTemplate()});
   document.getElementById('exerciseModal').addEventListener('click',e=>{if(e.target.id==='exerciseModal')closePicker()});
 
-  renderTemplates();renderDays();renderMyTemplates();updateOutput();
+  renderTemplates();renderSessions();renderMyTemplates();renderClients();updateOutput();initNut();initProgressView();
 })();
 </script>
 </body>
