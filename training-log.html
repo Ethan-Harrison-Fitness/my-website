@@ -30,6 +30,12 @@
     .brandbar{display:flex;justify-content:space-between;align-items:center;margin:4px 0 20px}.brand{font-size:22px}.brandlogo{width:40px;height:40px;border-radius:50%;display:block}.herologo{width:140px;height:140px;border-radius:50%;display:block;margin:8px auto 22px}.device{font-size:12px;color:var(--muted);text-align:right}.device strong{display:block;color:var(--text);font-weight:600}
     .hero{padding:24px 0 10px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:700}
     .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;margin:12px 0}.card.flat{padding:14px}.card.clickable:active{transform:scale(.99)}
+    .nbar{background:var(--line);border-radius:999px;height:10px;overflow:hidden;margin-top:8px}
+    .nbar>i{display:block;height:100%;background:var(--text);border-radius:999px}
+    .nrow{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px}
+    .nrow:first-child{margin-top:0}
+    .adot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;border:2px solid var(--line);color:var(--muted)}
+    .daynav{display:flex;justify-content:space-between;align-items:center;margin-top:-8px}
     .row{display:flex;align-items:center;gap:12px}.between{justify-content:space-between}.stack{display:grid;gap:12px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .btn{width:100%;border:0;border-radius:14px;padding:15px 18px;background:var(--text);color:var(--bg);font-weight:800;min-height:50px}.btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}.btn.smallbtn{width:auto;min-height:40px;padding:10px 14px}.btn.danger{color:#ffb7b7;border-color:#6d3333;background:#241617}.btn:disabled{opacity:.45;cursor:not-allowed}
     label{display:block;font-weight:700;font-size:14px;margin:16px 0 7px}.input,select{width:100%;border:1px solid var(--line);border-radius:13px;background:var(--panel);color:var(--text);padding:14px;min-height:50px;outline:none}.input:focus,select:focus{border-color:#777}
@@ -116,6 +122,7 @@
     <div class="card"><div class="row between"><strong>Weekly progress</strong><span class="small muted" id="weekProgressText"></span></div><div class="progress" style="margin-top:12px"><span id="weekBar" style="width:0"></span></div></div>
     <div class="section-title"><h2>Your sessions</h2><button class="btn ghost smallbtn" data-view="plan">Edit plan</button></div><div id="homeDays"></div>
     <button id="sendWeek" class="btn secondary" style="margin-top:16px">Send my week to Ethan</button>
+    <button id="shareProgress" class="btn secondary" style="margin-top:10px">Share my progress with Ethan</button>
   </section>
 
   <section id="plan" class="screen">
@@ -140,6 +147,57 @@
     <div class="section-title"><h2>Workout history</h2></div><div id="historyList" class="card"></div>
   </section>
 
+  <section id="nutrition" class="screen">
+    <div class="brandbar"><div class="brand">Food</div><div class="pill">Fuel the work</div></div><h1>Eat with a target.</h1>
+    <div class="daynav">
+      <button class="btn ghost smallbtn" id="nutPrevDay" aria-label="Previous day">←</button>
+      <p class="muted" id="nutDate" style="margin:0;font-weight:700"></p>
+      <button class="btn ghost smallbtn" id="nutNextDay" aria-label="Next day">→</button>
+    </div>
+    <div class="card">
+      <div class="section-title"><h2>Today</h2></div>
+      <div id="nutTargets"></div>
+    </div>
+    <div class="card">
+      <div class="section-title"><h2>On target</h2></div>
+      <p class="muted" style="margin-top:0">Days you stayed under calories and hit protein. Green means on target.</p>
+      <div id="adherenceDots" class="row" style="gap:8px;margin-top:4px"></div>
+      <p class="small" id="adherenceCount" style="margin:10px 0 0"></p>
+    </div>
+    <div class="card">
+      <div class="section-title"><h2>Water</h2></div>
+      <div class="nrow"><strong id="waterTotal">0 oz</strong><span class="muted"><input id="waterGoal" class="input" inputmode="numeric" autocomplete="off" style="width:76px;display:inline-block;padding:6px 10px"> oz goal</span></div>
+      <div class="nbar"><i id="waterFill" style="width:0"></i></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn ghost" data-water="8" style="flex:1">+8 oz</button>
+        <button class="btn ghost" data-water="16" style="flex:1">+16 oz</button>
+        <button class="btn ghost" data-water="24" style="flex:1">+24 oz</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title"><h2>Quick log</h2></div>
+      <div id="nutQuick"></div>
+    </div>
+    <div class="card">
+      <div class="section-title"><h2>Log a meal</h2></div>
+      <input id="foodSearch" class="input" placeholder="Search foods — try chicken" autocomplete="off">
+      <div id="foodResults"></div>
+      <div class="hr" style="margin:14px 0"></div>
+      <input id="nutName" class="input" placeholder="Or type a custom meal" autocomplete="off">
+      <div class="grid2" style="margin-top:10px">
+        <input id="nutCal" class="input" placeholder="Calories" inputmode="numeric" autocomplete="off">
+        <input id="nutPro" class="input" placeholder="Protein (g)" inputmode="numeric" autocomplete="off">
+        <input id="nutCarbs" class="input" placeholder="Carbs (g)" inputmode="numeric" autocomplete="off">
+        <input id="nutFat" class="input" placeholder="Fat (g)" inputmode="numeric" autocomplete="off">
+      </div>
+      <button id="nutAdd" class="btn" style="margin-top:12px">Add meal</button>
+    </div>
+    <div class="card">
+      <div class="section-title"><h2 id="nutListTitle">Today's meals</h2></div>
+      <div id="nutList"></div>
+    </div>
+  </section>
+
   <section id="settings" class="screen">
     <div class="brandbar"><div class="brand">Settings</div><div class="pill">On this device</div></div><h1>Your setup.</h1>
     <label for="settingsName">First name</label><input id="settingsName" class="input">
@@ -157,7 +215,7 @@
 </div>
 
 <nav id="nav" class="nav">
-  <button data-view="home"><b>⌂</b>Home</button><button data-view="plan"><b>▤</b>Plan</button><button data-view="progress"><b>↗</b>Progress</button><button data-view="history"><b>◷</b>History</button><button data-view="settings"><b>⚙</b>Settings</button>
+  <button data-view="home"><b>⌂</b>Home</button><button data-view="plan"><b>▤</b>Plan</button><button data-view="progress"><b>↗</b>Progress</button><button data-view="nutrition"><b>◉</b>Food</button><button data-view="history"><b>◷</b>History</button><button data-view="settings"><b>⚙</b>Settings</button>
 </nav>
 
 <div id="exerciseModal" class="modal"><div class="sheet"><div class="row between"><h2 style="margin:0">Add exercise</h2><button class="iconbtn" data-close-modal>×</button></div><div class="libsearch"><input id="librarySearch" class="input" placeholder="Search exercises" autocomplete="off"></div><div id="libraryList"></div><div class="hr"></div><label for="newExerciseName" style="margin-top:0">Custom exercise</label><div class="row"><input id="newExerciseName" class="input" placeholder="Example: Farmer's carry"><button id="saveExercise" class="btn smallbtn" style="margin-left:8px;white-space:nowrap">Add</button></div></div></div>
@@ -238,6 +296,19 @@
     On load, a valid #plan= hash is applied (profile name, template, and the
     per-day target sets/reps), stored with the rest of state in localStorage,
     then the hash is cleared from the address bar so it does not re-apply.
+
+    PLAN FORMAT v2 (coach plan links, current):
+    The plan builder now programs each session of the week independently:
+      #plan=encodeURIComponent(JSON.stringify(plan))
+    where plan = { v:2, name:'Client Name',
+      sessions:[ {n:'Upper A', items:[{e:0,s:4,r:10},{e:{c:'Custom'},s:3,r:12,rest:120}]} ] }
+    - v: format version, must be 2
+    - name: the client's first name
+    - sessions: 1 to 7, in weekly order; n = session name (shown in the log)
+    - items: e is an integer index into FLAT_LIBRARY (or {c:'Custom Name'}),
+      s = target sets, r = target reps; rest = seconds (optional, 15 to 600)
+    v2 links apply as a "custom" plan: the week's sessions appear in order
+    with no rotation. v1 links are still accepted exactly as before.
   */
   const FLAT_LIBRARY = EXERCISE_LIBRARY.flatMap(g=>g.items);
   function planExerciseName(ref){
@@ -249,7 +320,9 @@
     try{
       if(!hash||hash.indexOf('#plan=')!==0) return null;
       const plan=JSON.parse(decodeURIComponent(hash.slice(6)));
-      if(!plan||plan.v!==1||typeof plan.name!=='string'||!plan.name.trim()) return null;
+      if(!plan||typeof plan.name!=='string'||!plan.name.trim()) return null;
+      if(plan.v===2) return parsePlanV2(plan);
+      if(plan.v!==1) return null;
       const t=TEMPLATES.find(x=>x.id===plan.templateId); if(!t) return null;
       if(!plan.days||typeof plan.days!=='object') return null;
       const days={};
@@ -266,7 +339,37 @@
         });
         if(items.length) days[d.key]=items;
       });
-      return {name:plan.name.trim(),templateId:t.id,days};
+      const out={name:plan.name.trim(),templateId:t.id,days};
+      // Nutrition rides in the same link when the coach set targets.
+      const nut=sanitizeNutrition(plan.nutrition);
+      if(nut)out.nutrition=nut;
+      return out;
+    }catch(e){ return null; }
+  }
+  // v2: the week's sessions, each programmed independently. Applies as a
+  // "custom" plan — sessions appear in order with no rotation.
+  function parsePlanV2(plan){
+    try{
+      if(!Array.isArray(plan.sessions)||!plan.sessions.length||plan.sessions.length>7) return null;
+      const sessions=[];
+      for(const s of plan.sessions){
+        const nm=String((s&&s.n)||'').trim().slice(0,40);
+        if(!nm||!Array.isArray(s.items)) return null;
+        const targets=[];
+        s.items.forEach(it=>{
+          const name=planExerciseName(it&&it.e);
+          const sets=Math.max(1,Math.min(20,parseInt(it&&it.s,10)||0));
+          const reps=Math.max(1,Math.min(500,parseInt(it&&it.r,10)||0));
+          const rest=parseInt(it&&it.rest,10);
+          if(name&&sets&&reps){const t={name,sets,reps};if(rest>=15&&rest<=600)t.rest=rest;targets.push(t);}
+        });
+        if(!targets.length) return null;
+        sessions.push({name:nm,targets});
+      }
+      const out={v:2,name:plan.name.trim(),sessions};
+      const nut=sanitizeNutrition(plan.nutrition);
+      if(nut)out.nutrition=nut;
+      return out;
     }catch(e){ return null; }
   }
   function targetFor(templateId,dayKey,name){
@@ -274,7 +377,26 @@
     return arr.find(x=>x.name.toLowerCase()===String(name).toLowerCase())||null;
   }
   function applyPlan(plan){
+    // v2 sessions become a "custom" plan: each session maps to its own
+    // slot (custom:s0, custom:s1, ...) so the existing day machinery —
+    // targets, custom exercises, history — works unchanged.
+    if(plan.v===2){
+      state.profile=Object.assign({},state.profile||{},{name:plan.name,templateId:'custom',createdAt:(state.profile&&state.profile.createdAt)||Date.now()});
+      state.customPlan={sessions:plan.sessions.map(s=>s.name)};
+      state.planTargets={};
+      if(!state.exerciseRest)state.exerciseRest={};
+      plan.sessions.forEach((s,i)=>{
+        state.planTargets['custom:s'+i]=s.targets;
+        s.targets.forEach(t=>{ if(t.rest) state.exerciseRest[restKeyFor(t.name)]=t.rest; });
+      });
+      if(!state.profile.goal)state.profile.goal=plan.sessions.length;
+      if(plan.nutrition)applyNutrition(plan.nutrition);
+      else saveState();
+      try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
+      return;
+    }
     const t=TEMPLATES.find(x=>x.id===plan.templateId);
+    state.customPlan=null;
     state.profile=Object.assign({},state.profile||{},{name:plan.name,templateId:plan.templateId,createdAt:(state.profile&&state.profile.createdAt)||Date.now()});
     if(!state.profile.goal) state.profile.goal=schedule(t).length;
     state.planTargets={};
@@ -283,8 +405,229 @@
     // A plan item without rest leaves any existing value alone.
     if(!state.exerciseRest)state.exerciseRest={};
     Object.values(plan.days).forEach(items=>items.forEach(it=>{ if(it.rest) state.exerciseRest[restKeyFor(it.name)]=it.rest; }));
-    saveState();
+    // A nutrition payload in the same link lands in state.nutrition (last write wins).
+    if(plan.nutrition)applyNutrition(plan.nutrition);
+    else saveState();
     try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
+  }
+  /* ---------- Nutrition ----------
+    Coach-built nutrition arrives the same way workout plans do: the coach
+    sends a link ending in #nutrition=<encoded plan>. Opening it stores the
+    targets and the quick-log meal list on this device, then the hash is
+    cleared so it does not re-apply. Everything the client logs stays in
+    state.nutrition.meals, keyed by local date, on this device only.
+  */
+  function nutState(){
+    if(!state.nutrition||typeof state.nutrition!=='object')state.nutrition={targets:{cal:0,protein:0,carbs:0,fat:0},library:[],meals:{},water:{},waterGoal:100};
+    const n=state.nutrition;
+    if(!n.targets)n.targets={cal:0,protein:0,carbs:0,fat:0};
+    ['cal','protein','carbs','fat'].forEach(k=>{if(!(n.targets[k]>=0))n.targets[k]=0;});
+    if(!Array.isArray(n.library))n.library=[];
+    if(!n.meals||typeof n.meals!=='object')n.meals={};
+    if(!n.water||typeof n.water!=='object')n.water={};
+    if(!(n.waterGoal>0))n.waterGoal=100;
+    return n;
+  }
+  // Which day the Food tab is showing. 0 = today, 1 = yesterday, etc.
+  let nutOffset=0;
+  function nutViewKey(){const d=new Date();d.setDate(d.getDate()-nutOffset);return localDateKey(d);}
+  function waterFor(key){return (nutState().water||{})[key]||0;}
+  function waterAdd(oz){
+    const n=nutState(),k=nutViewKey();
+    n.water[k]=Math.max(0,Math.min(400,(n.water[k]||0)+oz));
+    saveState();renderNutrition();
+  }
+  // A day counts as "on target" when the client logged food, stayed at or
+  // under calories, and hit protein. Needs targets set to mean anything.
+  function adherence(days){
+    days=days||7;const tg=nutState().targets,out=[];
+    const ok=tg.cal>0&&tg.protein>0;
+    for(let i=days-1;i>=0;i--){
+      const d=new Date();d.setDate(d.getDate()-i);const k=localDateKey(d);
+      const t=nutTotals(k),logged=t.count>0;
+      out.push({key:k,label:d.toLocaleDateString(undefined,{weekday:'narrow'}),logged,on:ok&&logged&&t.cal<=tg.cal&&t.protein>=tg.protein});
+    }
+    return out;
+  }
+  function renderAdherence(){
+    const days=adherence(7),on=days.filter(d=>d.on).length;
+    document.getElementById('adherenceDots').innerHTML=days.map(d=>{
+      const st=d.on?'background:#2f9e5f;border-color:#2f9e5f;color:#fff':(d.logged?'background:#5a1f1f;border-color:#5a1f1f;color:#ffb3b3':'');
+      return `<div class="adot" style="${st}" title="${d.key}">${d.label}</div>`;
+    }).join('');
+    document.getElementById('adherenceCount').textContent=on+' of 7 days on target this week';
+  }
+  function nutMealsFor(key){const n=nutState();if(!n.meals[key])n.meals[key]=[];return n.meals[key];}
+  function nutTotals(key){
+    const ms=(nutState().meals||{})[key]||[];
+    const sum=k=>ms.reduce((s,m)=>s+(m[k]||0),0);
+    return {cal:sum('cal'),protein:sum('protein'),carbs:sum('carbs'),fat:sum('fat'),count:ms.length};
+  }
+  function fmtMacros(m){
+    const parts=[];
+    if(m.cal)parts.push(m.cal.toLocaleString()+' cal');
+    if(m.protein)parts.push(m.protein+'g protein');
+    if(m.carbs)parts.push(m.carbs+'g carbs');
+    if(m.fat)parts.push(m.fat+'g fat');
+    return parts.join(' · ');
+  }
+  function sanitizeNutrition(nut){
+    try{
+      if(!nut||nut.v!==1)return null;
+      const num=(v,max)=>Math.max(0,Math.min(max,parseInt(v,10)||0));
+      const tg=nut.targets||{};
+      const cal=num(tg.cal,20000),protein=num(tg.protein,2000),carbs=num(tg.carbs,2000),fat=num(tg.fat,2000);
+      const library=[];
+      if(Array.isArray(nut.library))nut.library.forEach(m=>{
+        const n=String((m&&m.n)||'').trim().slice(0,60);if(!n)return;
+        library.push({n,cal:num(m.cal,20000),protein:num(m.protein,2000),carbs:num(m.carbs,2000),fat:num(m.fat,2000)});
+      });
+      return {targets:{cal,protein,carbs,fat},library:library.slice(0,50)};
+    }catch(e){return null;}
+  }
+  function parseNutritionHash(hash){
+    try{
+      if(!hash||hash.indexOf('#nutrition=')!==0)return null;
+      return sanitizeNutrition(JSON.parse(decodeURIComponent(hash.slice(11))));
+    }catch(e){return null;}
+  }
+  function applyNutrition(nut){
+    const n=nutState();
+    n.targets=nut.targets;n.library=nut.library;
+    saveState();
+    try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
+  }
+  function nutBar(label,val,target,unit){
+    const pct=target>0?Math.min(100,Math.round(val/target*100)):0;
+    const goal=target>0?` / ${target.toLocaleString()} ${unit}`:` ${unit}`;
+    return `<div class="nrow"><strong>${esc(label)}</strong><span class="muted">${val.toLocaleString()}${goal}</span></div><div class="nbar"><i style="width:${pct}%"></i></div>`;
+  }
+  function renderNutrition(){
+    const n=nutState(),key=nutViewKey();
+    const vd=new Date();vd.setDate(vd.getDate()-nutOffset);
+    document.getElementById('nutDate').textContent=nutOffset===0?'Today':(nutOffset===1?'Yesterday':vd.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'}));
+    document.getElementById('nutNextDay').disabled=nutOffset<=0;
+    document.getElementById('nutListTitle').textContent=nutOffset===0?"Today's meals":(nutOffset===1?"Yesterday's meals":'Meals · '+vd.toLocaleDateString(undefined,{month:'short',day:'numeric'}));
+    renderAdherence();
+    const wgoal=n.waterGoal||100,wtot=waterFor(key);
+    document.getElementById('waterTotal').textContent=wtot.toLocaleString()+' oz';
+    document.getElementById('waterFill').style.width=Math.min(100,Math.round(wgoal?wtot/wgoal*100:0))+'%';
+    const wg=document.getElementById('waterGoal');if(document.activeElement!==wg)wg.value=wgoal;
+    const t=nutTotals(key),tg=n.targets;
+    document.getElementById('nutTargets').innerHTML=(tg.cal>0||tg.protein>0||tg.carbs>0||tg.fat>0)
+      ?nutBar('Calories',t.cal,tg.cal,'cal')+nutBar('Protein',t.protein,tg.protein,'g')+nutBar('Carbs',t.carbs,tg.carbs,'g')+nutBar('Fat',t.fat,tg.fat,'g')
+      :'<p class="small muted" style="margin:0">Your coach has not set your targets yet. You can still log meals below.</p>';
+    const lib=n.library;
+    document.getElementById('nutQuick').innerHTML=lib.length?lib.map((m,i)=>{
+      const macro=fmtMacros(m);
+      return `<button class="choice" data-nquick="${i}"><strong>${esc(m.n)}</strong><span>${macro||'Tap to log'}</span></button>`;
+    }).join(''):'<p class="small muted" style="margin:0">No quick meals yet. Your coach can add your go-to meals here.</p>';
+    const meals=n.meals[key]||[];
+    document.getElementById('nutList').innerHTML=meals.length?meals.map(m=>{
+      const macro=fmtMacros(m);
+      return `<div class="row between" style="padding:10px 0;border-bottom:1px solid var(--line)"><div><strong>${esc(m.name)}</strong>${macro?`<div class="small muted">${macro}</div>`:''}</div><button class="btn ghost smallbtn" data-ndel="${m.id}">Remove</button></div>`;
+    }).join(''):'<p class="small muted" style="margin:0">Nothing logged this day yet.</p>';
+  }
+  function logMeal(name,cal,protein,carbs,fat){
+    name=String(name||'').trim().slice(0,60);if(!name){toast('Name the meal');return false;}
+    const num=(v,max)=>Math.max(0,Math.min(max,parseInt(v,10)||0));
+    nutMealsFor(nutViewKey()).push({id:uid(),name,cal:num(cal,20000),protein:num(protein,2000),carbs:num(carbs,2000),fat:num(fat,2000),ts:Date.now()});
+    saveState();renderNutrition();return true;
+  }
+  function quickLog(i){
+    const lib=nutState().library,m=lib[Number(i)];
+    if(!m){toast('Meal not found');return;}
+    nutMealsFor(nutViewKey()).push({id:uid(),name:m.n,cal:m.cal||0,protein:m.protein||0,carbs:m.carbs||0,fat:m.fat||0,ts:Date.now()});
+    saveState();renderNutrition();toast('Logged '+m.n);
+  }
+  function deleteMeal(id){
+    const n=nutState(),key=nutViewKey();
+    n.meals[key]=(n.meals[key]||[]).filter(m=>m.id!==id);
+    saveState();renderNutrition();
+  }
+  function nutritionWeekSummary(){
+    let days=0,cal=0,pro=0,carbs=0,fat=0,woz=0,wdays=0;
+    for(let i=0;i<7;i++){
+      const d=new Date();d.setDate(d.getDate()-i);const k=localDateKey(d);
+      const t=nutTotals(k);if(t.count){days++;cal+=t.cal;pro+=t.protein;carbs+=t.carbs;fat+=t.fat;}
+      const w=waterFor(k);if(w>0){wdays++;woz+=w;}
+    }
+    if(!days&&!wdays)return [];
+    const lines=[];
+    if(days){
+      lines.push(`Food logged ${days}/7 days`);
+      lines.push(`Avg ${Math.round(cal/days).toLocaleString()} cal · ${Math.round(pro/days)}g protein · ${Math.round(carbs/days)}g carbs · ${Math.round(fat/days)}g fat`);
+      const ad=adherence(7);
+      if(nutState().targets.cal>0&&nutState().targets.protein>0)lines.push(`On target ${ad.filter(d=>d.on).length}/7 days`);
+    }
+    if(wdays)lines.push(`Water avg ${Math.round(woz/wdays)} oz/day`);
+    return lines;
+  }
+  /* ---------- Food lookup ----------
+    A small built-in food list (USDA-based values per stated serving, rounded)
+    so clients can search "chicken" and log it with macros already filled in.
+    No API, no network, works offline. The coach's quick-log meals and manual
+    entries cover everything else.
+  */
+  const COMMON_FOODS=[
+    ['Chicken breast, grilled (4 oz)',185,35,0,4],
+    ['Chicken thigh, roasted (4 oz)',200,28,0,10],
+    ['Ground turkey 93%, cooked (4 oz)',175,23,0,9],
+    ['Ground beef 90%, cooked (4 oz)',215,24,0,12],
+    ['Salmon fillet, baked (4 oz)',230,25,0,14],
+    ['Tuna, canned in water (1 can)',150,32,0,1],
+    ['Shrimp, cooked (4 oz)',110,24,0,1],
+    ['Eggs, large (2)',140,12,1,10],
+    ['Egg whites, large (4)',68,14,1,0],
+    ['Greek yogurt, plain nonfat (3/4 cup)',100,17,6,0],
+    ['Cottage cheese 1% (1/2 cup)',80,14,3,1],
+    ['Whey protein (1 scoop)',120,24,3,1],
+    ['Turkey deli slices (4)',60,12,2,1],
+    ['White rice, cooked (1 cup)',205,4,45,0],
+    ['Brown rice, cooked (1 cup)',215,5,45,2],
+    ['Oats, dry (1/2 cup)',150,5,27,3],
+    ['Pasta, cooked (1 cup)',220,8,43,1],
+    ['Whole wheat bread (2 slices)',160,8,28,2],
+    ['Sweet potato, baked (1 medium)',100,2,24,0],
+    ['White potato, baked (1 medium)',160,4,37,0],
+    ['Banana (1 medium)',105,1,27,0],
+    ['Apple (1 medium)',95,0,25,0],
+    ['Blueberries (1 cup)',85,1,21,0],
+    ['Strawberries (1 cup)',50,1,12,0],
+    ['Broccoli, cooked (1 cup)',55,4,11,1],
+    ['Green beans, cooked (1 cup)',45,2,10,0],
+    ['Mixed vegetables, frozen (1 cup)',120,5,24,0],
+    ['Almonds (1 oz)',165,6,6,14],
+    ['Peanuts (1 oz)',160,7,5,14],
+    ['Peanut butter (2 tbsp)',190,8,7,16],
+    ['Almond butter (2 tbsp)',195,7,6,18],
+    ['Avocado (1/2)',120,1,6,11],
+    ['Olive oil (1 tbsp)',120,0,0,14],
+    ['Milk 1% (1 cup)',100,8,12,2],
+    ['Cheddar cheese (1 oz)',115,7,0,9],
+    ['Mozzarella, part-skim (1 oz)',85,7,1,6]
+  ].map(f=>({n:f[0],cal:f[1],protein:f[2],carbs:f[3],fat:f[4]}));
+  function searchFoods(q){
+    q=String(q||'').trim().toLowerCase();
+    if(q.length<2)return [];
+    return COMMON_FOODS.filter(f=>f.n.toLowerCase().includes(q)).slice(0,8);
+  }
+  function renderFoodResults(){
+    const q=document.getElementById('foodSearch').value,box=document.getElementById('foodResults');
+    const hits=searchFoods(q);
+    if(!q.trim()){box.innerHTML='';return;}
+    box.innerHTML=hits.length?'<div style="margin-top:8px">'+hits.map(f=>{
+      const i=COMMON_FOODS.indexOf(f),macro=fmtMacros(f);
+      return `<button class="choice" data-food="${i}"><strong>${esc(f.n)}</strong><span>${macro}</span></button>`;
+    }).join('')+'</div>':'<p class="small muted" style="margin:8px 0 0">No match — log it manually below.</p>';
+  }
+  function logFood(i){
+    const f=COMMON_FOODS[Number(i)];
+    if(!f){toast('Food not found');return;}
+    nutMealsFor(nutViewKey()).push({id:uid(),name:f.n,cal:f.cal,protein:f.protein,carbs:f.carbs,fat:f.fat,ts:Date.now()});
+    saveState();renderNutrition();
+    document.getElementById('foodSearch').value='';document.getElementById('foodResults').innerHTML='';
+    toast('Logged '+f.n);
   }
   const TEMPLATES = [
     {id:'upper-lower-3',name:'3-Day Upper / Lower',desc:'Upper and lower sessions rotate so both get attention.',days:[
@@ -303,7 +646,7 @@
       {key:'back-shoulders',name:'Back + Shoulders',exercises:[]},{key:'chest',name:'Chest',exercises:[]},{key:'legs',name:'Legs',exercises:[]},{key:'arms',name:'Arms',exercises:[]}
     ],schedule:(w)=>['back-shoulders','chest','legs','arms',['back-shoulders','chest','legs','arms'][w%4]]}
   ];
-  const blankState = () => ({version:1,profile:null,customExercises:{},planTargets:{},exerciseRest:{},history:[],draft:null,weighins:[]});
+  const blankState = () => ({version:1,profile:null,customPlan:null,customExercises:{},planTargets:{},exerciseRest:{},history:[],draft:null,weighins:[],nutrition:{targets:{cal:0,protein:0,carbs:0,fat:0},library:[],meals:{},water:{},waterGoal:100}});
   let state = loadState();
   let selectedTemplate = null;
   let modalContext = null;
@@ -328,7 +671,15 @@
   function startOfWeek(d=new Date()){const x=new Date(d);x.setHours(0,0,0,0);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return x}
   function weekKey(d=new Date()){return localDateKey(startOfWeek(d))}
   function weekIndex(d=new Date()){return Math.floor(startOfWeek(d).getTime()/604800000)}
-  function currentTemplate(){return TEMPLATES.find(t=>t.id===state.profile?.templateId)||TEMPLATES[0]}
+  function currentTemplate(){
+    if(state.profile&&state.profile.templateId==='custom'&&state.customPlan&&Array.isArray(state.customPlan.sessions)&&state.customPlan.sessions.length){
+      const names=state.customPlan.sessions;
+      return {id:'custom',name:'My Plan',desc:'Built by your coach for this week.',
+        days:names.map((n,i)=>({key:'s'+i,name:String(n).slice(0,40),exercises:[]})),
+        schedule:()=>names.map((_,i)=>'s'+i)};
+    }
+    return TEMPLATES.find(t=>t.id===state.profile?.templateId)||TEMPLATES[0];
+  }
   function dayByKey(template,key){return template.days.find(d=>d.key===key)}
   function schedule(template=currentTemplate()){return template.schedule(weekIndex())}
   function customKey(templateId,dayKey){return `${templateId}:${dayKey}`}
@@ -612,7 +963,7 @@
     document.getElementById('restBar').classList.toggle('hide',!(id==='workout'&&state.profile));
     document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
     window.scrollTo(0,0);
-    if(id==='home')renderHome();if(id==='plan')renderPlan();if(id==='history')renderHistory();if(id==='settings')renderSettings();if(id==='progress'){renderWeighins();renderProgress()}
+    if(id==='home')renderHome();if(id==='plan')renderPlan();if(id==='history')renderHistory();if(id==='settings')renderSettings();if(id==='nutrition')renderNutrition();if(id==='progress'){renderWeighins();renderProgress()}
   }
   function renderTemplateChoices(){
     document.getElementById('templateChoices').innerHTML=TEMPLATES.map(t=>`<button class="choice ${selectedTemplate===t.id?'selected':''}" data-template="${t.id}"><strong>${esc(t.name)}</strong><span>${esc(t.desc)}</span></button>`).join('');
@@ -653,7 +1004,10 @@
   function renderSettings(){
     document.getElementById('settingsName').value=state.profile.name;document.getElementById('settingsGoal').value=state.profile.goal;
     document.getElementById('settingsRest').value=String(state.profile.restSeconds||90);
-    const sel=document.getElementById('settingsTemplate');sel.innerHTML=TEMPLATES.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('');sel.value=state.profile.templateId;
+    const sel=document.getElementById('settingsTemplate');
+    let opts=TEMPLATES.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('');
+    if(state.profile.templateId==='custom')opts+=`<option value="custom">Custom plan (from coach)</option>`;
+    sel.innerHTML=opts;sel.value=state.profile.templateId;
   }
   function makeExercise(name,target){
     const count=target&&target.sets>0?Math.min(20,target.sets):1;
@@ -794,14 +1148,87 @@
     const lines=[`Hey Ethan, here is my EH Fitness weekly update.`,`Name: ${state.profile.name}`,`Workouts: ${week.length}/${goal}`,`Sets logged: ${sets}${wuSets?` (+${wuSets} warm-up)`:''}`,`Current streak: ${streak} week${streak===1?'':'s'}`,`Personal bests: ${hits.length?hits.join(', '):'None this week'}`];
     const wi=sortedWeighins();
     if(wi.length){const last=wi[wi.length-1];lines.push(`Weigh-in: ${trimNum(last.w)} lb (${dateFromKey(last.d).toLocaleDateString(undefined,{month:'short',day:'numeric'})})`)}
+    nutritionWeekSummary().forEach(l=>lines.push(l));
     const noted=week.filter(h=>h.note&&h.note.trim());
     if(noted.length){lines.push('Notes:');noted.forEach(h=>{let n=h.note.trim();if(n.length>140)n=n.slice(0,137)+'…';lines.push(`- ${h.dayName}: "${n}"`)})}
     const separator=/iPad|iPhone|iPod/.test(navigator.userAgent)?'&body=':'?body=';
     window.location.href=`sms:${COACH_SMS}${separator}${encodeURIComponent(lines.join('\n'))}`;
   }
+  /* ---------- Progress sharing ----------
+    One-tap progress link for the coach. Builds a compact snapshot of the
+    last 14 days of training, the last 7 days of nutrition, and recent
+    weigh-ins, then encodes it into a plan-builder.html#progress= link.
+    The client copies the link and texts it to Ethan; the coach tool
+    renders it as a read-only progress dashboard. No server involved —
+    the data rides in the link itself.
+  */
+  const COACH_BUILDER_URL='https://www.ethanharrisonfitness.com/plan-builder.html';
+  function b64urlEncode(str){
+    const bytes=new TextEncoder().encode(str);let bin='';
+    for(let i=0;i<bytes.length;i++)bin+=String.fromCharCode(bytes[i]);
+    return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  }
+  function buildProgressSnapshot(){
+    const num=v=>{const n=parseFloat(v);return isFinite(n)?n:0;};
+    const cutoff=new Date();cutoff.setDate(cutoff.getDate()-13);cutoff.setHours(0,0,0,0);
+    const workouts=(state.history||[])
+      .filter(h=>{try{return dateFromKey(h.date)>=cutoff;}catch(e){return false;}})
+      .sort((a,b)=>a.date<b.date?-1:(a.date>b.date?1:0))
+      .slice(-14)
+      .map(h=>({
+        d:h.date,n:String(h.dayName||'').slice(0,40),
+        ex:(h.exercises||[]).slice(0,12).map(e=>{
+          const work=(e.sets||[]).filter(s=>!s.warmup);
+          let bw=0,br=0;
+          work.forEach(s=>{const w=num(s.weight),r=parseInt(s.reps,10)||0;if(w>bw||(w===bw&&r>br)){bw=w;br=r;}});
+          return [String(e.name||'').slice(0,40),work.length,Math.round(bw*10)/10,br];
+        })
+      }));
+    const nut=[];
+    for(let i=6;i>=0;i--){
+      const d=new Date();d.setDate(d.getDate()-i);const k=localDateKey(d);
+      const t=nutTotals(k);
+      nut.push({d:k,cal:t.cal,p:t.protein,c:t.carbs,f:t.fat,w:waterFor(k),meals:t.count});
+    }
+    const tg=nutState().targets;
+    const onT=(tg.cal>0&&tg.protein>0)?adherence(7).filter(a=>a.on).length:null;
+    return {
+      v:1,
+      name:String((state.profile&&state.profile.name)||'').slice(0,40),
+      goal:Math.max(0,parseInt(state.profile&&state.profile.goal,10)||0),
+      streak:streakWeeks(),
+      at:Date.now(),
+      targets:{cal:tg.cal||0,p:tg.protein||0},
+      workouts:workouts,
+      nutrition:nut,
+      onTarget:onT,
+      weighins:sortedWeighins().slice(-5).map(x=>({d:x.d,w:num(x.w)})),
+      pbs:pbsHitThisWeek().slice(0,8)
+    };
+  }
+  function progressLink(){
+    return COACH_BUILDER_URL+'#progress='+b64urlEncode(JSON.stringify(buildProgressSnapshot()));
+  }
+  function shareProgress(){
+    const link=progressLink();
+    const done=()=>toast('Progress link copied. Text it to Ethan.');
+    const fallback=()=>{
+      const ta=document.createElement('textarea');
+      ta.value=link;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');done();}catch(e){prompt('Copy your progress link and text it to Ethan:',link);}
+      document.body.removeChild(ta);
+    };
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(link).then(done,fallback);
+    else fallback();
+  }
   document.addEventListener('click',e=>{
     const vid=e.target.closest('[data-video]');if(vid&&vid.dataset.videoUrl){window.open(vid.dataset.videoUrl,'_blank','noopener');return}
     const view=e.target.closest('[data-view]');if(view){showView(view.dataset.view);return}
+    const nq=e.target.closest('[data-nquick]');if(nq){quickLog(nq.dataset.nquick);return}
+    const ndel=e.target.closest('[data-ndel]');if(ndel){deleteMeal(ndel.dataset.ndel);return}
+    const fd=e.target.closest('[data-food]');if(fd){logFood(fd.dataset.food);return}
+    const w=e.target.closest('[data-water]');if(w){waterAdd(parseInt(w.dataset.water,10)||0);return}
     const pex=e.target.closest('[data-progress-exercise]');if(pex){progressExercise=pex.dataset.progressExercise;renderProgress();return}
     const sw=e.target.closest('[data-save-weighin]');if(sw){saveWeighin();return}
     const dw=e.target.closest('[data-delete-weighin]');if(dw){deleteWeighin(dw.dataset.deleteWeighin);return}
@@ -861,7 +1288,16 @@
     const r=state.history.find(h=>h.id===lastFinishedId);if(r){r.note=e.target.value;saveState()}
   });
   document.getElementById('finishHome').addEventListener('click',()=>showView('home'));
+  document.getElementById('nutAdd').addEventListener('click',()=>{
+    const ok=logMeal(document.getElementById('nutName').value,document.getElementById('nutCal').value,document.getElementById('nutPro').value,document.getElementById('nutCarbs').value,document.getElementById('nutFat').value);
+    if(ok){['nutName','nutCal','nutPro','nutCarbs','nutFat'].forEach(id=>{document.getElementById(id).value='';});toast('Meal logged');}
+  });
+  document.getElementById('foodSearch').addEventListener('input',renderFoodResults);
+  document.getElementById('nutPrevDay').addEventListener('click',()=>{nutOffset=Math.min(30,nutOffset+1);renderNutrition();});
+  document.getElementById('nutNextDay').addEventListener('click',()=>{nutOffset=Math.max(0,nutOffset-1);renderNutrition();});
+  document.getElementById('waterGoal').addEventListener('change',e=>{const n=nutState();n.waterGoal=Math.max(16,Math.min(400,parseInt(e.target.value,10)||100));saveState();renderNutrition();});
   document.getElementById('sendWeek').addEventListener('click',sendWeek);
+  document.getElementById('shareProgress').addEventListener('click',shareProgress);
   document.getElementById('saveSettings').addEventListener('click',()=>{
     const name=document.getElementById('settingsName').value.trim();if(!name){toast('Add your first name');return}
     state.profile.name=name;state.profile.goal=Number(document.getElementById('settingsGoal').value);state.profile.templateId=document.getElementById('settingsTemplate').value;state.profile.restSeconds=Number(document.getElementById('settingsRest').value);saveState();toast('Changes saved');renderSettings();
@@ -877,12 +1313,14 @@
     const ss=document.getElementById('settingsSaveState');if(ss)ss.innerHTML='<strong>Not saving in this preview</strong><p class="small muted">This preview cannot save. Open the log from your website and everything will save on the device.</p>';
   }
   // Minimal test hooks (used by automated checks; harmless in production).
-  window.__ehTest={get state(){return state},saveWeighin,deleteWeighin,renderWeighins,sortedWeighins,sendWeek,suggestLine,exerciseSessions,renderWorkout,toggleWarmupSet,finishWorkout,lastTimeLine,exerciseMetric,personalBests,renderHistory,renderProgress,openSwapModal,applySwapPick,addPickedExercise,openExerciseModal,pickerCurrentNames};
+  window.__ehTest={get state(){return state},saveWeighin,deleteWeighin,renderWeighins,sortedWeighins,sendWeek,suggestLine,exerciseSessions,renderWorkout,toggleWarmupSet,finishWorkout,lastTimeLine,exerciseMetric,personalBests,renderHistory,renderProgress,openSwapModal,applySwapPick,addPickedExercise,openExerciseModal,pickerCurrentNames,renderNutrition,logMeal,quickLog,deleteMeal,parseNutritionHash,applyNutrition,nutTotals,nutritionWeekSummary,searchFoods,logFood,fmtMacros,waterFor,waterAdd,adherence,nutViewKey,shareProgress,buildProgressSnapshot,progressLink,b64urlEncode};
   function init(){
     if(!storageOK)showStorageBanner();
     const plan=parsePlanHash(window.location.hash||'');
     if(plan)applyPlan(plan);
-    if(state.profile){if(plan)toast('Your coach set up your plan.');showView('home')}
+    const nut=parseNutritionHash(window.location.hash||'');
+    if(nut)applyNutrition(nut);
+    if(state.profile){if(plan||nut)toast(plan&&nut?'Your coach set up your plan and nutrition.':plan?'Your coach set up your plan.':'Your coach set up your nutrition.');showView('home')}
     else renderOnboarding();
   }
   init();
